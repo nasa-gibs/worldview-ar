@@ -1,7 +1,12 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.VR;
 
+/// <summary>
+/// Simple script to interact with the VRButton script. 
+/// All uGUI objects that you want to be able to interact with need to be on World Canvases and have colliders
+/// Either the uGUI elements or this object needs to have a collider that is marked as a trigger.
+/// </summary>
+[RequireComponent(typeof(Collider))]
 public class Hand : MonoBehaviour
 {
     public VRNode vrNode;

@@ -1,11 +1,31 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
+/// <summary>
+/// Lets you interact with uGUI systems without using the mouse by passing events to the underlying uGUI interfaces
+/// Can also have its own OnClick events, letting a vr user have additional events trigger when using the UI element vs a non-vr user
+/// </summary>
 public class VRButton : MonoBehaviour
 {
+    /// <summary>
+    /// Event that will only be triggered by this script and not normal ui interaction
+    /// </summary>
     public UnityEvent OnClick;
+
+    #region uGUI event passthrough
+
+    private IPointerEnterHandler pointerEnter;
+    private IPointerExitHandler pointerExit;
+    private IPointerClickHandler pointerClick; 
+    #endregion
+
+    private void Awake()
+    {
+        pointerEnter = GetComponent<IPointerEnterHandler>();
+        pointerExit = GetComponent<IPointerExitHandler>();
+        pointerClick = GetComponent<IPointerClickHandler>();
+    }
 
     public void Click(Vector3 PointerPosition)
     {
@@ -14,28 +34,26 @@ public class VRButton : MonoBehaviour
             OnClick.Invoke();
         }
 
-        if (GetComponent<IPointerClickHandler>() != null)
+        if (pointerClick != null)
         {
-            GetComponent<IPointerClickHandler>().OnPointerClick(new PointerEventData(EventSystem.current){position = Camera.main.WorldToScreenPoint(PointerPosition)});
+            pointerClick.OnPointerClick(new PointerEventData(EventSystem.current){position = Camera.main.WorldToScreenPoint(PointerPosition)});
         }
 
     }
 
     public void PointerEnter(Vector3 PointerPosition)
     {
-        IPointerEnterHandler pe = GetComponent<IPointerEnterHandler>();
-        if (pe != null)
+        if (pointerEnter != null)
         {
-            pe.OnPointerEnter(new PointerEventData(EventSystem.current){position = Camera.main.WorldToScreenPoint(PointerPosition) });
+            pointerEnter.OnPointerEnter(new PointerEventData(EventSystem.current){position = Camera.main.WorldToScreenPoint(PointerPosition) });
         }
     }
 
     public void PointerExit(Vector3 PointerPosition)
     {
-        IPointerExitHandler pe = GetComponent<IPointerExitHandler>();
-        if (pe != null)
+        if (pointerExit != null)
         {
-            pe.OnPointerExit(new PointerEventData(EventSystem.current) { position = Camera.main.WorldToScreenPoint(PointerPosition) });
+            pointerExit.OnPointerExit(new PointerEventData(EventSystem.current) { position = Camera.main.WorldToScreenPoint(PointerPosition) });
         }
     }
 }
