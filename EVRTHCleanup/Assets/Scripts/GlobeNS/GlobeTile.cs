@@ -409,7 +409,7 @@ namespace GlobeNS
             int layerIndex = FindLayer(layerNameToSet, dateTimeToSet);
             if (layerIndex == -1)
             {
-                Debug.LogFormat("Can't find layer {0} for this tile", layerNameToSet);
+                Debug.LogFormat("Can't find layer {0} for this tile at {1}", layerNameToSet, dateTimeToSet.ToLongDateString());
                 return;
             }
 

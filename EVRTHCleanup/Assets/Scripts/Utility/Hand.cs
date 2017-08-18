@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Utility;
+using UnityEngine;
 using UnityEngine.VR;
 
 /// <summary>
-/// Simple script to interact with the VRButton script. 
+/// Simple script to interact with the IPointerHandlerVR script. 
 /// All uGUI objects that you want to be able to interact with need to be on World Canvases and have colliders
 /// Either the uGUI elements or this object needs to have a collider that is marked as a trigger.
 /// </summary>
@@ -13,7 +14,8 @@ public class Hand : MonoBehaviour
 
     private new Transform transform;
 
-    private VRButton isTouchingVrButton;
+    private IPointerHandlerVR isTouchingVrButton;
+
 
     private void Awake()
     {
@@ -27,27 +29,57 @@ public class Hand : MonoBehaviour
         transform.localPosition = InputTracking.GetLocalPosition(vrNode);
         transform.localRotation = InputTracking.GetLocalRotation(vrNode);
 
-        if (Input.GetButtonDown("Submit") && isTouchingVrButton)
+        if (Input.GetButtonDown("VRSubmit") && isTouchingVrButton != null)
         {
-            isTouchingVrButton.Click(transform.position);
-            print("Clicked");
+            isTouchingVrButton.PointerDown(transform.position);
+            print("Pointer Down");
+        }
+
+        if (Input.GetButtonUp("VRSubmit") && isTouchingVrButton != null)
+        {
+            isTouchingVrButton.PointerUp(transform.position);
+            print("Pointer Up");
         }
 
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponent<VRButton>())
+        ///**********************************************************************************************************************************************************************************************************
+        /// https://blogs.unity3d.com/2014/05/16/custom-operator-should-we-keep-it/
+        /// The c++ object becomes null but part of the c# unity wrapper hangs on so this check is actually important even though it seems insane
+        /// the link above explains it.
+        if (isTouchingVrButton != null && isTouchingVrButton.Equals(null))
         {
-            isTouchingVrButton = other.GetComponent<VRButton>();
+            isTouchingVrButton = null;
+        }
+        /// *********************************************************************************************************************************************************************************************************
+
+        if (isTouchingVrButton != null  && !((MonoBehaviour)isTouchingVrButton).gameObject.Equals(other.gameObject))
+        {
+            isTouchingVrButton.PointerExit(transform.position);
+            isTouchingVrButton = null;
+        }
+        if (other.GetComponent<IPointerHandlerVR>() != null)
+        {
+            isTouchingVrButton = other.GetComponent<IPointerHandlerVR>();
             isTouchingVrButton.PointerEnter(transform.position);
-            print("Touching " + isTouchingVrButton.gameObject.name);
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (isTouchingVrButton && isTouchingVrButton.gameObject.Equals(other.gameObject))
+        ///**********************************************************************************************************************************************************************************************************
+        /// https://blogs.unity3d.com/2014/05/16/custom-operator-should-we-keep-it/
+        /// The c++ object becomes null but part of the c# unity wrapper hangs on so this check is actually important even though it seems insane
+        /// the link above explains it.
+        if (isTouchingVrButton != null && isTouchingVrButton.Equals(null))
+        {
+            isTouchingVrButton = null;
+        }
+        /// *********************************************************************************************************************************************************************************************************
+
+        if (isTouchingVrButton != null && ((MonoBehaviour)isTouchingVrButton).gameObject.Equals(other.gameObject))
         {
             isTouchingVrButton.PointerExit(transform.position);
             isTouchingVrButton = null;
