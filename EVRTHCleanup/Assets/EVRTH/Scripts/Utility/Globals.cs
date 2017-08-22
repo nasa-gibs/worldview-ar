@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 
@@ -96,19 +95,3 @@ public delegate void TextureDownloadHandler(string layer, DateTime date, Texture
 #endregion
 
 
-//public static class Extensions
-//{
-//    public static float GetMinimumIntensity(this Texture2D t)
-//    {
-//        Color[] pixels = t.GetPixels();
-//        Color min = pixels.OrderBy(c => (c.r + c.g + c.b) * 0.3f).FirstOrDefault();
-//        return (min.r + min.g + min.b) / 3;
-//    }
-
-//    public static float GetMaximumIntensity(this Texture2D t)
-//    {
-//        Color[] pixels = t.GetPixels();
-//        Color min = pixels.OrderByDescending(c => (c.r + c.g + c.b) * 0.3f).FirstOrDefault();
-//        return (min.r + min.g + min.b) / 3;
-//    }
-//}

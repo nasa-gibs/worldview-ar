@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Geometry;
 using GIBS;
 using GlobeNS;
@@ -193,8 +192,6 @@ namespace Visualiation
 
                 pixelColor = tile.scienceDataTexture.GetPixelBilinear(textureUvs[i].x, textureUvs[i].y);
 
-                //float value = GetValueFromTileTexture(tile, textureUvs[i], out newVertexColor);
-
                 float value = ColormappedPixelColorToScienceValue(pixelColor, minValue, colorToHeightRStep,
                     colorToHeightGStep, colorToHeightBStep);
 
@@ -228,8 +225,6 @@ namespace Visualiation
 
             mesh.RecalculateNormals();
             mesh.RecalculateBounds();
-
-            //Debug.Log("Deforming globe mesh with " + vertices.Length + " verts");
         }
 
 

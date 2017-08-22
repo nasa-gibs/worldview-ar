@@ -9,7 +9,7 @@ using WMS;
 namespace Utility
 {
     [Serializable]
-    public class Tile //: MonoBehaviour
+    public class Tile 
     {
         public LatLonBoundingBox bBox;
 
@@ -48,8 +48,6 @@ namespace Utility
 
             float minVal = ((Globe) globe).availableLayers[layer].Colormap.min;
             float maxVal = ((Globe) globe).availableLayers[layer].Colormap.max;
-
-            //Debug.Log(minVal + ", " + maxVal);
 
             // Deform associated globe model
             for (int i = 0; i < deformedSphereMakers.Count; i++)

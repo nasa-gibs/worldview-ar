@@ -21,12 +21,7 @@ namespace Visualiation
         public enum LayerVisualizationStyle
         {
             Flat,
-            Volumetric,
-            SurfaceFire,
-            Smoke,
-            Pins,
-            Bars,
-            Ice
+            Volumetric
         }
 
         public struct AppliedLayer
@@ -49,7 +44,6 @@ namespace Visualiation
                 Instance = this;
         }
 
-        // Update is called once per frame
         private void Update()
         {
             // Test

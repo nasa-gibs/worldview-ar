@@ -7,6 +7,10 @@ using Visualiation;
 
 namespace GIBS
 {
+    /// <summary>
+    /// Controls the application of layers through the dropdown ui.
+    /// Just an example of how to interact with the main GIBS Data source
+    /// </summary>
     public class GlobeControls : MonoBehaviour
     {
 
@@ -14,11 +18,8 @@ namespace GIBS
         private LayerApplier layerApplier;
 
         public Dropdown flatLayerDropdown0;
-        public Dropdown flatLayerDropdown1;
-        public Dropdown flatLayerDropdown2;
 
         public Dropdown extrudedlayerDropdown0;
-        public Dropdown extrudedlayerDropdown1;
 
         private bool itemsLoaded;
 
@@ -40,22 +41,6 @@ namespace GIBS
                 PopulateDropdownItems();
             }
 
-#if UNITY_EDITOR
-            if (Input.GetKeyDown(KeyCode.R))
-            {
-                UpdateGlobeLayerByName(0, "BlueMarble_NextGeneration", false, new DateTime(2016, 10, 23));
-                //UpdateGlobeLayerByName(0, "AMSR2_Surface_Rain_Rate_Day", false, new DateTime(2016, 9, 15));
-                //UpdateGlobeLayerByName(1, "AMSR2_Surface_Rain_Rate_Night", false, new DateTime(2016, 9, 15));
-
-                //UpdateGlobeLayerByName(0, "AMSR2_Surface_Rain_Rate_Day", false, new DateTime(2016, 9, 15));
-                UpdateGlobeLayerByName(0, "AMSR2_Surface_Rain_Rate_Day", true, new DateTime(2016, 10, 23));
-                UpdateGlobeLayerByName(1, "AMSR2_Surface_Rain_Rate_Night", true, new DateTime(2016, 10, 23));
-
-                // Test for alignment
-                //UpdateGlobeLayerByName(0, "ASTER_GDEM_Color_Index", false, new DateTime(2016, 9, 15));
-                //UpdateGlobeLayerByName(0, "ASTER_GDEM_Color_Index", true, new DateTime(2016, 9, 15));
-            }
-#endif
         }
 
         private void PopulateDropdownItems()
@@ -69,8 +54,6 @@ namespace GIBS
             }
 
             flatLayerDropdown0.options = options;
-            flatLayerDropdown1.options = options;
-            flatLayerDropdown2.options = options;
 
             if (extrudedlayerDropdown0 != null)
             {
@@ -78,11 +61,6 @@ namespace GIBS
                     new List<Dropdown.OptionData> {new Dropdown.OptionData("AMSR2_Surface_Rain_Rate_Day"), new Dropdown.OptionData("AIRS_CO_Total_Column_Day") };
             }
 
-            if (extrudedlayerDropdown1 != null)
-            {
-                extrudedlayerDropdown1.options =
-                    new List<Dropdown.OptionData> {new Dropdown.OptionData("AMSR2_Surface_Rain_Rate_Night")};
-            }
 
             itemsLoaded = true;
         }
@@ -92,25 +70,12 @@ namespace GIBS
             UpdateGlobeLayer(0, flatLayerDropdown0, false);
         }
 
-        public void OnFlatLayer1DropdownChange()
-        {
-            UpdateGlobeLayer(1, flatLayerDropdown1, false);
-        }
-
-        public void OnFlatLayer2DropdownChange()
-        {
-            UpdateGlobeLayer(2, flatLayerDropdown2, false);
-        }
 
         public void OnExtrudedLayer0DropdownChange()
         {
             UpdateGlobeLayer(0, extrudedlayerDropdown0, true);
         }
 
-        public void OnExtrudedLayer1DropdownChange()
-        {
-            UpdateGlobeLayer(1, extrudedlayerDropdown1, true);
-        }
 
         private void UpdateGlobeLayer(int layerIndex, Dropdown dropdown, bool isExtruded)
         {

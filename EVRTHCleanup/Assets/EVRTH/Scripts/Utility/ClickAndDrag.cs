@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Assets.Scripts.Utility
+namespace Utility
 {
+    /// <summary>
+    /// Lets you grab and move the ui window to interact with it in VR
+    /// </summary>
     public class ClickAndDrag : MonoBehaviour,IPointerDownHandler,IPointerUpHandler,IPointerEnterHandler,IPointerExitHandler,IPointerClickHandler,IPointerHandlerVR
     {
         public Transform FollowTarget;

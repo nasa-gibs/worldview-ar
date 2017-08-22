@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Simulation
+namespace Utility
 {
     public class InfiniteCenteredFloor : MonoBehaviour 
     {
@@ -17,11 +17,7 @@ namespace Simulation
         protected MaterialPropertyBlock floorDataBlock;
         protected int fadeDataId;
         protected Vector4 fadeData;
-        /*protected int pulseDataID;
-	protected Vector4 pulseData;	
-	protected int pulseDisplayDataID;
-	protected Vector2 pulseDisplayData;
-*/
+
         private Transform hmdCamera;
 
         // We don't allow negative floor grid sizes
@@ -40,12 +36,6 @@ namespace Simulation
             floorDataBlock = new MaterialPropertyBlock();
             fadeDataId = Shader.PropertyToID("_fadeData");
             fadeData = activeFloorRenderer.sharedMaterial.GetVector(fadeDataId);
-            /*
-		pulseDataID = Shader.PropertyToID("_pulseData");
-		pulseData = activeFloorRenderer.sharedMaterial.GetVector(pulseDataID);
-		pulseDisplayDataID = Shader.PropertyToID("_pulseDisplayData");
-		pulseDisplayData = activeFloorRenderer.sharedMaterial.GetVector(pulseDisplayDataID);
-*/
             hmdCamera = Camera.main.transform;
 
             // Initialize them

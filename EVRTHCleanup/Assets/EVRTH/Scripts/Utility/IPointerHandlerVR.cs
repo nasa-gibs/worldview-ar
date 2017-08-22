@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
-using UnityEngine.EventSystems;
+﻿using UnityEngine;
 
-namespace Assets.Scripts.Utility
+namespace Utility
 {
     interface IPointerHandlerVR
     {
