@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 
-namespace Utility
+namespace EVRTH.Scripts.Utility
 {
-    interface IPointerHandlerVR
+    internal interface IPointerHandlerVr
     {
-        void PointerDown(Vector3 PointerPosition);
-        void PointerUp(Vector3 PointerPosition);
-        void PointerEnter(Vector3 PointerPosition);
-        void PointerExit(Vector3 PointerPosition);
+        void PointerDown(Vector3 pointerPosition);
+        void PointerUp(Vector3 pointerPosition);
+        void PointerEnter(Vector3 pointerPosition);
+        void PointerExit(Vector3 pointerPosition);
     }
 }

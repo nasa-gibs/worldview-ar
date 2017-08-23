@@ -1,74 +1,65 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Utility
+namespace EVRTH.Scripts.Utility
 {
     /// <summary>
     /// Lets you grab and move the ui window to interact with it in VR
     /// </summary>
-    public class ClickAndDrag : MonoBehaviour,IPointerDownHandler,IPointerUpHandler,IPointerEnterHandler,IPointerExitHandler,IPointerClickHandler,IPointerHandlerVR
+    public class ClickAndDrag : MonoBehaviour,IPointerDownHandler,IPointerUpHandler,IPointerEnterHandler,IPointerExitHandler,IPointerHandlerVr
     {
-        public Transform FollowTarget;
+        public Transform followTarget;
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            print("Pointer Down");
-            if (FollowTarget)
+            if (followTarget)
             {
-                transform.parent  = FollowTarget;
+                transform.parent  = followTarget;
             }
         }
 
         public void OnPointerUp(PointerEventData eventData)
         {
-            print("Pointer Up");
             transform.parent = null;
         }
 
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            print("Pointer Enter");
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            print("pointer exit");
         }
 
         public void OnTriggerEnter(Collider otherCollider)
         {
-            FollowTarget = otherCollider.transform;
+            followTarget = otherCollider.transform;
         }
 
         public void OnTriggerExit(Collider otherCollider)
         {
-            FollowTarget = null;
+            followTarget = null;
         }
 
-        public void PointerDown(Vector3 PointerPosition)
+        public void PointerDown(Vector3 pointerPosition)
         {
-            OnPointerDown(new PointerEventData(EventSystem.current) { position = Camera.main.WorldToScreenPoint(PointerPosition) });
+            OnPointerDown(new PointerEventData(EventSystem.current) { position = Camera.main.WorldToScreenPoint(pointerPosition) });
         }
 
-        public void PointerUp(Vector3 PointerPosition)
+        public void PointerUp(Vector3 pointerPosition)
         {
-            OnPointerUp(new PointerEventData(EventSystem.current) { position = Camera.main.WorldToScreenPoint(PointerPosition) });
+            OnPointerUp(new PointerEventData(EventSystem.current) { position = Camera.main.WorldToScreenPoint(pointerPosition) });
         }
 
-        public void PointerEnter(Vector3 PointerPosition)
+        public void PointerEnter(Vector3 pointerPosition)
         {
-            OnPointerEnter(new PointerEventData(EventSystem.current) { position = Camera.main.WorldToScreenPoint(PointerPosition) });
+            OnPointerEnter(new PointerEventData(EventSystem.current) { position = Camera.main.WorldToScreenPoint(pointerPosition) });
         }
 
-        public void PointerExit(Vector3 PointerPosition)
+        public void PointerExit(Vector3 pointerPosition)
         {
-            OnPointerExit(new PointerEventData(EventSystem.current) { position = Camera.main.WorldToScreenPoint(PointerPosition) });
-        }
-
-        public void OnPointerClick(PointerEventData eventData)
-        {
-            print("Clicked");
+            OnPointerExit(new PointerEventData(EventSystem.current) { position = Camera.main.WorldToScreenPoint(pointerPosition) });
         }
     }
 }

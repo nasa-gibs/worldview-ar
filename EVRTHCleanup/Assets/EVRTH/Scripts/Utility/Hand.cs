@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.VR;
 
-namespace Utility
+namespace EVRTH.Scripts.Utility
 {
     /// <summary>
     /// Simple script to interact with the IPointerHandlerVR script. 
@@ -20,7 +20,7 @@ namespace Utility
 
         private new Transform transform;
 
-        private IPointerHandlerVR isTouchingVrButton;
+        private IPointerHandlerVr isTouchingVrButton;
         private bool isZoom;
         private float oldDist;
 
@@ -40,13 +40,11 @@ namespace Utility
             if (Input.GetButtonDown("VRSubmit") && isTouchingVrButton != null)
             {
                 isTouchingVrButton.PointerDown(transform.position);
-                print("Pointer Down");
             }
 
             if (Input.GetButtonUp("VRSubmit") && isTouchingVrButton != null)
             {
                 isTouchingVrButton.PointerUp(transform.position);
-                print("Pointer Up");
             }
 
             //rotate the globe with the touchpad
@@ -59,7 +57,7 @@ namespace Utility
 
             if (isZoom)
             {
-                var newDist = Vector3.Distance(transform.position, globeTransform.position);
+                float newDist = Vector3.Distance(transform.position, globeTransform.position);
                 if (newDist - oldDist > scaleThreshold && globeTransform.localScale.x < 2.75f)
                 {
                     oldDist = newDist;
@@ -96,9 +94,9 @@ namespace Utility
                 isTouchingVrButton.PointerExit(transform.position);
                 isTouchingVrButton = null;
             }
-            if (other.GetComponent<IPointerHandlerVR>() != null)
+            if (other.GetComponent<IPointerHandlerVr>() != null)
             {
-                isTouchingVrButton = other.GetComponent<IPointerHandlerVR>();
+                isTouchingVrButton = other.GetComponent<IPointerHandlerVr>();
                 isTouchingVrButton.PointerEnter(transform.position);
             }
         }

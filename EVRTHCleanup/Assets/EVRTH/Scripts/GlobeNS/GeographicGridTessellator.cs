@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using Geometry;
+using EVRTH.Scripts.Geometry;
+using EVRTH.Scripts.WMS;
 using UnityEngine;
-using WMS;
 
-namespace GlobeNS
+namespace EVRTH.Scripts.GlobeNS
 {
     /// <summary>
     /// Based on Geographic Grid Ellipsoid Tessellator from "3D Engine Design for Virtual Globes", section 4.1.4, but modified to generate a
@@ -100,8 +100,8 @@ namespace GlobeNS
             // Generate a triangle strip for each row
             for (int i = 0; i < numberOfStackPartitions; ++i)
             {
-                int topRowOffset = (i * (numberOfSlicePartitions + 1));
-                int bottomRowOffset = ((i + 1) * (numberOfSlicePartitions + 1));
+                int topRowOffset = i * (numberOfSlicePartitions + 1);
+                int bottomRowOffset = (i + 1) * (numberOfSlicePartitions + 1);
 
                 for (int j = 0; j < numberOfSlicePartitions; ++j)
                 {
@@ -142,15 +142,14 @@ namespace GlobeNS
         /// <summary>
         /// Get the texture coordinates for the globe point with a given normal.
         /// </summary>
-        /// <param name="position">Normal of a point on the globe for which to get the texture coordinates.</param>
         /// <returns>A 2D vector containing the texture coordinates corresponding to the given normal vector.</returns>
         public static Vector2 GetUvFromNormal(LatLonBoundingBox geometryBBox, LatLonBoundingBox textureBBox, Ellipsoid ellipsoid, Vector3 normal)
         {
             // Compute texture coordinates on a full globe texture
             Vector2 tex = ComputeGlobalTextureCoordinate(normal);
 
-            Vector2 minTexCoords = new Vector2(0.0f, 0.0f);
-            Vector2 maxTexCoords = new Vector2(1.0f, 1.0f);
+            Vector2 minTexCoords = Vector2.zero;
+            Vector2 maxTexCoords = Vector2.one;
 
             Vector2 deltaTexCoord = new Vector2(1.0f, 1.0f);
 
@@ -188,8 +187,8 @@ namespace GlobeNS
             // This operation has no effect if they bounding boxes are equal.
             if (geometryBBox != null && textureBBox != null)
             {
-                u = (u * geometryBBox.DeltaLon) / textureBBox.DeltaLon;
-                v = (v * geometryBBox.DeltaLat) / textureBBox.DeltaLat;
+                u = u * geometryBBox.DeltaLon / textureBBox.DeltaLon;
+                v = v * geometryBBox.DeltaLat / textureBBox.DeltaLat;
             }
 
             return new Vector2(u, v);
@@ -198,26 +197,26 @@ namespace GlobeNS
         /// <summary>
         /// Gets the four corners of a bounding box sector of the given ellipsoid region.  Upper left refers to Northerly and westerly latlon coordinates.
         /// </summary>
-        public void GetSectorBounds(LatLonBoundingBox bbox, Ellipsoid ellipsoid, ref Vector3 upperLeft, ref Vector3 lowerLeft, ref Vector3 upperRight, ref Vector3 lowerRight)
-        {
-            float lat =  Mathf.Clamp(bbox.maxLat, -90 + eps, 90 - eps);
-            float phi = (lat + 90f) * Mathf.Deg2Rad;
-            float sinPhi = Mathf.Sin(phi);
-            float theta = bbox.minLon * Mathf.Deg2Rad;
-            upperLeft = new Vector3(Mathf.Cos(theta) * ellipsoid.Radii.x * sinPhi, Mathf.Sin(theta) * ellipsoid.Radii.y * sinPhi, ellipsoid.Radii.z * Mathf.Cos(phi));
+        //public void GetSectorBounds(LatLonBoundingBox bbox, Ellipsoid ellipsoid, ref Vector3 upperLeft, ref Vector3 lowerLeft, ref Vector3 upperRight, ref Vector3 lowerRight)
+        //{
+        //    float lat =  Mathf.Clamp(bbox.maxLat, -90 + eps, 90 - eps);
+        //    float phi = (lat + 90f) * Mathf.Deg2Rad;
+        //    float sinPhi = Mathf.Sin(phi);
+        //    float theta = bbox.minLon * Mathf.Deg2Rad;
+        //    upperLeft = new Vector3(Mathf.Cos(theta) * ellipsoid.Radii.x * sinPhi, Mathf.Sin(theta) * ellipsoid.Radii.y * sinPhi, ellipsoid.Radii.z * Mathf.Cos(phi));
 
-            theta = bbox.maxLon * Mathf.Deg2Rad;
-            upperRight = new Vector3(Mathf.Cos(theta) * ellipsoid.Radii.x * sinPhi, Mathf.Sin(theta) * ellipsoid.Radii.y * sinPhi, ellipsoid.Radii.z * Mathf.Cos(phi));
+        //    theta = bbox.maxLon * Mathf.Deg2Rad;
+        //    upperRight = new Vector3(Mathf.Cos(theta) * ellipsoid.Radii.x * sinPhi, Mathf.Sin(theta) * ellipsoid.Radii.y * sinPhi, ellipsoid.Radii.z * Mathf.Cos(phi));
 
-            lat =  Mathf.Clamp(bbox.minLat, -90 + eps, 90 - eps);
-            phi = (lat + 90f) * Mathf.Deg2Rad;
-            sinPhi = Mathf.Sin(phi);
-            theta = bbox.minLon * Mathf.Deg2Rad;
-            lowerLeft = new Vector3(Mathf.Cos(theta) * ellipsoid.Radii.x * sinPhi, Mathf.Sin(theta) * ellipsoid.Radii.y * sinPhi, ellipsoid.Radii.z * Mathf.Cos(phi));
+        //    lat =  Mathf.Clamp(bbox.minLat, -90 + eps, 90 - eps);
+        //    phi = (lat + 90f) * Mathf.Deg2Rad;
+        //    sinPhi = Mathf.Sin(phi);
+        //    theta = bbox.minLon * Mathf.Deg2Rad;
+        //    lowerLeft = new Vector3(Mathf.Cos(theta) * ellipsoid.Radii.x * sinPhi, Mathf.Sin(theta) * ellipsoid.Radii.y * sinPhi, ellipsoid.Radii.z * Mathf.Cos(phi));
 
-            theta = bbox.maxLon * Mathf.Deg2Rad;
-            lowerRight = new Vector3(Mathf.Cos(theta) * ellipsoid.Radii.x * sinPhi, Mathf.Sin(theta) * ellipsoid.Radii.y * sinPhi, ellipsoid.Radii.z * Mathf.Cos(phi));
-        }
+        //    theta = bbox.maxLon * Mathf.Deg2Rad;
+        //    lowerRight = new Vector3(Mathf.Cos(theta) * ellipsoid.Radii.x * sinPhi, Mathf.Sin(theta) * ellipsoid.Radii.y * sinPhi, ellipsoid.Radii.z * Mathf.Cos(phi));
+        //}
 
         /// <summary>
         /// Generate geometry for an ellipsoid globe.
@@ -237,7 +236,7 @@ namespace GlobeNS
 
             for (int i = 0; i < numberOfSlicePartitions; ++i)
             {
-                float theta = 2 * Mathf.PI * (((float)i) / numberOfSlicePartitions);
+                float theta = 2 * Mathf.PI * ((float)i / numberOfSlicePartitions);
                 cosTheta[i] = Mathf.Cos(theta);
                 sinTheta[i] = Mathf.Sin(theta);
             }
@@ -250,7 +249,7 @@ namespace GlobeNS
             // For each latitude stack...
             for (int i = 1; i < numberOfStackPartitions; ++i)
             {
-                float phi = Mathf.PI * (((float)i) / numberOfStackPartitions);
+                float phi = Mathf.PI * ((float)i / numberOfStackPartitions);
                 float sinPhi = Mathf.Sin(phi);
 
                 float xSinPhi = ellipsoid.Radii.x * sinPhi;
@@ -294,8 +293,8 @@ namespace GlobeNS
             // Middle rows are triangle strips
             for (int i = 0; i < numberOfStackPartitions - 2; ++i)
             {
-                int topRowOffset = (i * numberOfSlicePartitions) + 1;
-                int bottomRowOffset = ((i + 1) * numberOfSlicePartitions) + 1;
+                int topRowOffset = i * numberOfSlicePartitions + 1;
+                int bottomRowOffset = (i + 1) * numberOfSlicePartitions + 1;
 
                 for (int j = 0; j < numberOfSlicePartitions - 1; ++j)
                 {
@@ -336,10 +335,10 @@ namespace GlobeNS
             return mesh;
         }
 
-        // Gets a list of globe sphere vertices contained within a latlong bounding box
+        // Gets a list of globe sphere vertices contained within a latlon bounding box
         public VertexAndUvContainer LatLongBoundingBoxToGlobeVertexListAndUvs(LatLonBoundingBox bbox, int numberOfStackPartitions, int numberOfSlicePartitions)
         {
-            // Get the fraction of the range (from 0.0 to 1.0) that this latlong bbox covers for latitude and longitude
+            // Get the fraction of the range (from 0.0 to 1.0) that this latlon bbox covers for latitude and longitude
             float latitudeStartFraction = (bbox.minLat + 90.0f) / 180.0f;
             float latitudeEndFraction = (bbox.maxLat + 90.0f) / 180.0f;
             float longitudeStartFraction = (bbox.minLon + 180.0f) / 360.0f;
@@ -360,7 +359,7 @@ namespace GlobeNS
             if (latitudeEndFraction == 1.0f)
             {
                 // Add bottom vertex index
-                vertexIndicesOfInterest.Add((numberOfStackPartitions - 1) * (numberOfSlicePartitions) + 2 - 1);
+                vertexIndicesOfInterest.Add((numberOfStackPartitions - 1) * numberOfSlicePartitions + 2 - 1);
                 // Longitude is arbitrary
                 textureUvsForVertexIndicesOfInterest.Add(new Vector2(1.0f, 1.0f));
             }
@@ -380,41 +379,18 @@ namespace GlobeNS
                     int vertexIndex = 1 + (latitudeStackIndex - 1) * numberOfSlicePartitions + longitudeSliceIndex;
 
                     float latitudeOfThisVertex = latitudeStackIndex * (180.0f / (numberOfStackPartitions - 1.0f)) - 90.0f;
-                    float longtitudeOfThisVertex = longitudeSliceIndex * (360.0f / numberOfSlicePartitions) - 180.0f;
+                    float longitudeOfThisVertex = longitudeSliceIndex * (360.0f / numberOfSlicePartitions) - 180.0f;
 
                     // Calculate the lat/long percentages within this box at which the vertex is located
                     float latPercent = (latitudeOfThisVertex - bbox.minLat) / bbox.DeltaLat;
-                    float lonPercent = (longtitudeOfThisVertex - bbox.minLon) / bbox.DeltaLon;
+                    float lonPercent = (longitudeOfThisVertex - bbox.minLon) / bbox.DeltaLon;
 
                     // Double-check that the vertex is included in the tile!
-                    if ((latPercent >= 0.0f) && (latPercent <= 1.0f) && (lonPercent >= 0.0f) && (lonPercent <= 1.0f) && (vertexIndex >= 0))
+                    if (latPercent >= 0.0f && latPercent <= 1.0f && lonPercent >= 0.0f && lonPercent <= 1.0f && vertexIndex >= 0)
                     {
                         vertexIndicesOfInterest.Add(vertexIndex);
                         textureUvsForVertexIndicesOfInterest.Add(new Vector2(lonPercent, latPercent));
                     }
-
-                    //else if ((latPercent >= 0.0f) && (latPercent <= 1.0f))
-                    //{
-                    //    Debug.LogError("Weird lon percentage found!!");
-                    //    Debug.Log("latPercent: " + latPercent);
-                    //    Debug.Log("lonPercent: " + lonPercent);
-                    //    Debug.Log("Vertex index: " + vertexIndex);
-                    //    Debug.Log("For longitudeIndex " + longitudeSliceIndex + " and latitudeIndex " + latitudeStackIndex);
-                    //    Debug.Log("And latitudeStartFraction " + latitudeStartFraction);
-                    //    Debug.Log("And latitudeEndFraction " + latitudeEndFraction);
-                    //    Debug.Log("And minlat " + bbox.MinLat + " and maxlat " + bbox.MaxLat);
-                    //    Debug.Log("And longitudeStartFraction " + longitudeStartFraction);
-                    //    Debug.Log("And longitudeEndFraction " + longitudeEndFraction);
-                    //    Debug.Log("And minlon " + bbox.MinLon + " and maxlon " + bbox.MaxLon);
-                    //    Debug.Log("Adding vertexIndex " + vertexIndex);
-                    //    Debug.Log("From latitudeStackIndex " + latitudeStackIndex);
-                    //    Debug.Log("And longitudeSliceIndex " + longitudeSliceIndex);
-                    //    Debug.Log("========================");
-                    //}
-                    //else
-                    //{
-
-                    //}
                 }
             }
 
@@ -447,12 +423,12 @@ namespace GlobeNS
 
         private int NumberOfVertices(int numberOfSlicePartitions, int numberOfStackPartitions)
         {
-            return ((numberOfStackPartitions + 1) * (numberOfSlicePartitions + 1));
+            return (numberOfStackPartitions + 1) * (numberOfSlicePartitions + 1);
         }
 
         private int NumberOfTriangles(int numberOfSlicePartitions, int numberOfStackPartitions)
         {
-            int numberOfTriangles = 2 * (numberOfStackPartitions * numberOfSlicePartitions);
+            int numberOfTriangles = 2 * numberOfStackPartitions * numberOfSlicePartitions;
             return numberOfTriangles;
         }
 
@@ -513,8 +489,8 @@ namespace GlobeNS
                 positions.Add(v1);
 
                 // Move vertices toward the center of the globe
-                v0 += (height * -normals[segment.item1]);
-                v1 += (height * -normals[segment.item2]);
+                v0 += height * -normals[segment.item1];
+                v1 += height * -normals[segment.item2];
 
                 positions.Add(v0);
                 positions.Add(v1);

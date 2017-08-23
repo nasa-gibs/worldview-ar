@@ -1,6 +1,6 @@
-﻿using WMS;
+﻿using EVRTH.Scripts.WMS;
 
-namespace GIBS
+namespace EVRTH.Scripts.GIBS
 {
     public struct TileMatrix
     {

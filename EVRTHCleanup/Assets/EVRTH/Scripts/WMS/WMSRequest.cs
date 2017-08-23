@@ -1,6 +1,8 @@
-﻿
-namespace WMS
+﻿namespace EVRTH.Scripts.WMS
 {
+    /// <summary>
+    /// formats the web requests to the earth data servers
+    /// </summary>
     public class WmsRequest
     {
 
@@ -31,8 +33,7 @@ namespace WMS
         {
             get
             {
-                string urlTemplate =
-                    "{0}/twms-geo/twms.cgi?request=GetMap&layers={1}&srs=EPSG:4326&format={2}&styles={3}&time={4}&width={5}&height={6}&bbox={7},{8},{9},{10}";
+                const string urlTemplate = "{0}/twms-geo/twms.cgi?request=GetMap&layers={1}&srs=EPSG:4326&format={2}&styles={3}&time={4}&width={5}&height={6}&bbox={7},{8},{9},{10}";
                 return string.Format(urlTemplate, server, layer, format, styles, time, width, height, bBox.minLon,
                     bBox.minLat,
                     bBox.maxLon, bBox.maxLat);

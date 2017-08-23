@@ -2,12 +2,12 @@
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace Utility
+namespace EVRTH.Scripts.Utility
 {
     /// <summary>
     /// lets you scroll a scrollbar on the dropdown with buttons instead of with the handle, since the handle did not work well with VR
     /// </summary>
-    public class TouchScroll : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerHandlerVR
+    public class TouchScroll : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerHandlerVr
     {
         [Range(-1f,1f)]
         public float scrollSpeed;
@@ -46,24 +46,24 @@ namespace Utility
             targetImage.color = defaultColor;
         }
 
-        public void PointerDown(Vector3 PointerPosition)
+        public void PointerDown(Vector3 pointerPosition)
         {
             
         }
 
-        public void PointerUp(Vector3 PointerPosition)
+        public void PointerUp(Vector3 pointerPosition)
         {
         }
 
-        public void PointerEnter(Vector3 PointerPosition)
+        public void PointerEnter(Vector3 pointerPosition)
         {
-            OnPointerEnter(new PointerEventData(EventSystem.current) { position = Camera.main.WorldToScreenPoint(PointerPosition) });
+            OnPointerEnter(new PointerEventData(EventSystem.current) { position = Camera.main.WorldToScreenPoint(pointerPosition) });
         }
 
-        public void PointerExit(Vector3 PointerPosition)
+        public void PointerExit(Vector3 pointerPosition)
         {
             OnPointerExit(
-                new PointerEventData(EventSystem.current) {position = Camera.main.WorldToScreenPoint(PointerPosition)});
+                new PointerEventData(EventSystem.current) {position = Camera.main.WorldToScreenPoint(pointerPosition)});
         }
     }
 }

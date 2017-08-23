@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using GIBS;
-using GlobeNS;
+using EVRTH.Scripts.GIBS;
+using EVRTH.Scripts.GlobeNS;
 using UnityEngine;
 
-namespace Utility
+namespace EVRTH.Scripts.Utility
 {
     internal struct TileCreationParams
     {
@@ -23,7 +23,7 @@ namespace Utility
     public class TileFactory : MonoBehaviour
     {
         public int tilesPerFrame = 3;
-        private Queue<TileCreationParams> tileQueue = new Queue<TileCreationParams>();
+        private readonly Queue<TileCreationParams> tileQueue = new Queue<TileCreationParams>();
 
         [HideInInspector]
         public int queueSize;
@@ -56,12 +56,12 @@ namespace Utility
 
         private void CreateTile(GlobeTile parent, Wmts coords)
         {
-            GameObject tileGO = Instantiate(tileTemplate);
+            GameObject tileGo = Instantiate(tileTemplate);
 
-            tileGO.transform.SetParentClearRelativeTransform(parent.transform);
-            tileGO.name = coords.ToString();
+            tileGo.transform.SetParentClearRelativeTransform(parent.transform);
+            tileGo.name = coords.ToString();
 
-            GlobeTile tile = tileGO.GetComponent<GlobeTile>();
+            GlobeTile tile = tileGo.GetComponent<GlobeTile>();
             tile.coords = coords;
             tile.globe = globe;
             tile.bBox = globe.CurrentLayer.Wmts2Bbox(coords);
@@ -73,12 +73,12 @@ namespace Utility
 
         public GlobeTile CreateTile(Transform parent, Wmts coords)
         {
-            GameObject tileGO = Instantiate(tileTemplate);
+            GameObject tileGo = Instantiate(tileTemplate);
 
-            tileGO.transform.SetParentClearRelativeTransform(parent);
-            tileGO.name = coords.ToString();
+            tileGo.transform.SetParentClearRelativeTransform(parent);
+            tileGo.name = coords.ToString();
 
-            GlobeTile tile = tileGO.GetComponent<GlobeTile>();
+            GlobeTile tile = tileGo.GetComponent<GlobeTile>();
             tile.coords = coords;
             tile.globe = globe;
             tile.bBox = Layer.Wmts2DefaultBbox(coords);

@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using Geometry;
-using GIBS;
+using EVRTH.Scripts.Geometry;
+using EVRTH.Scripts.GIBS;
+using EVRTH.Scripts.Utility;
+using EVRTH.Scripts.WMS;
 using UnityEngine;
-using WMS;
 
-namespace GlobeNS
+namespace EVRTH.Scripts.GlobeNS
 {
     public class GlobeTile : MonoBehaviour
     {
-        private readonly string[] SHADER_OLD_TEXTURE_NAMES = { "_OldTex", "_OldOverlay1", "_OldOverlay2" };
-        private readonly string[] SHADER_TEXTURE_NAMES = { "_NewTex", "_Overlay1", "_Overlay2" };
-        private readonly string[] SHADER_BLEND_NAMES = { "_Blend", "_Overlay1Blend", "_Overlay2Blend" };
+        private readonly string[] shaderOldTextureNames = { "_OldTex", "_OldOverlay1", "_OldOverlay2" };
+        private readonly string[] shaderTextureNames = { "_NewTex", "_Overlay1", "_Overlay2" };
+        private readonly string[] shaderBlendNames = { "_Blend", "_Overlay1Blend", "_Overlay2Blend" };
 
         /// <summary>
         /// Minimum value for the view angle scaling factor uses to select levels of detail.
@@ -19,7 +20,7 @@ namespace GlobeNS
         /// and tiles viewed from the side toward lower resolution. However, if the factor
         /// gets too small it can push tiles at the edge of the globe too far toward low res.
         /// </summary>
-        private const float MinViewAngleFactor = 0.5f;
+        private const float minViewAngleFactor = 0.5f;
 
         //properties
         [HideInInspector]
@@ -27,7 +28,7 @@ namespace GlobeNS
         public Wmts coords;
         private GlobeTile[] children;
         private int childCount; // Number of children that have been instantiated
-        public string URL;
+        public string url;
 
         //stored components
         public Material mapMaterial;
@@ -60,7 +61,7 @@ namespace GlobeNS
         private float pixelDistanceScale;
         private Vector3 tileCenterOnGlobe;
 
-        private readonly GlobeTileLayerInfo[] layers = new GlobeTileLayerInfo[Globe.MAX_LAYERS];
+        private readonly GlobeTileLayerInfo[] layers = new GlobeTileLayerInfo[Globe.MaxLayers];
 
         /// <summary>
         /// Geodetic surface normal, in local coordinates.
@@ -158,15 +159,6 @@ namespace GlobeNS
 
         public void UpdateAppearance()
         {
-            // Frustum culling (let's make top-level geometry still render, to avoid it taking time to pop in)
-            //Bounds cullingBounds = GetComponent<MeshRenderer>().bounds;
-            //if (!GeometryUtility.TestPlanesAABB(this.Globe.FrustumForThisFrame, cullingBounds) && !this.IsTopLevelTile())
-            //{
-            //    SetVisible(false);
-            //    wasPreviouslyCulled = true;
-            //    return;
-            //}
-
             // Only make adjustments to visibility criteria once we're finished with the crossfade for this load,
             // to avoid race condition pop-ins
             bool visible = storedVisibility;
@@ -247,7 +239,7 @@ namespace GlobeNS
             // the viewer is looking at directly toward higher resolution and tiles that are seen edge on toward lower resolution.
             Vector3 cameraDir = cam.transform.forward;
             Vector3 cameraDirLs = transform.InverseTransformDirection(cameraDir);
-            float viewAngleFactor = Mathf.Max(Mathf.Abs(Vector3.Dot(cameraDirLs, surfaceNormal)), MinViewAngleFactor);
+            float viewAngleFactor = Mathf.Max(Mathf.Abs(Vector3.Dot(cameraDirLs, surfaceNormal)), minViewAngleFactor);
 
             bool meetsLodCriteria = cameraResolution > pixelSize * viewAngleFactor * globe.transform.lossyScale.x;
 
@@ -403,8 +395,6 @@ namespace GlobeNS
 
         public void LoadTexture(string layerNameToSet, DateTime dateTimeToSet, Texture myTexture)
         {
-            //Debug.Log("Loading texture for " + gameObject.name + " " + layerNameToSet);
-
             // Make sure that the texture we've receive is for a layer currently on the globe
             int layerIndex = FindLayer(layerNameToSet, dateTimeToSet);
             if (layerIndex == -1)
@@ -415,7 +405,7 @@ namespace GlobeNS
 
             if (!globe.wireFrameMode)
             {
-                string textureParam = SHADER_TEXTURE_NAMES[layerIndex];
+                string textureParam = shaderTextureNames[layerIndex];
 
                 Debug.Assert(GetComponent<Renderer>().material.HasProperty(textureParam), "Shader does not support property " + textureParam);
                 Material currentMaterial = GetComponent<Renderer>().material;
@@ -442,7 +432,7 @@ namespace GlobeNS
         {
             if (!globe.wireFrameMode)
             {
-                string textureParam = SHADER_TEXTURE_NAMES[layerIndex];
+                string textureParam = shaderTextureNames[layerIndex];
 
                 Debug.Assert(GetComponent<Renderer>().material.HasProperty(textureParam), "Shader does not support property " + textureParam);
                 Material currentMaterial = GetComponent<Renderer>().material;
@@ -479,23 +469,23 @@ namespace GlobeNS
 
         private void PrepareForLayerTransition(int layerIndex, Texture newTexture, Texture currentTexture, Vector2 currentTextureOffset, Vector2 currentTextureScale, float transitionValue)
         {
-            var currentMaterial =  GetComponent<Renderer>().material;
+            Material currentMaterial =  GetComponent<Renderer>().material;
 
             // Move current texture to old texture slot and swap over to showing it
-            string oldTexParam = SHADER_OLD_TEXTURE_NAMES[layerIndex];
+            string oldTexParam = shaderOldTextureNames[layerIndex];
             currentMaterial.SetTexture(oldTexParam, currentTexture);
             currentMaterial.SetTextureOffset(oldTexParam, currentTextureOffset);
             currentMaterial.SetTextureScale(oldTexParam, currentTextureScale);
 
             // Move new texture to new texture slot
-            string newTexParam = SHADER_TEXTURE_NAMES[layerIndex];
+            string newTexParam = shaderTextureNames[layerIndex];
             currentMaterial.SetTexture(newTexParam, newTexture);
 		
             // Determine what the scales and offsets should be based on zoom level comparisons
             if (globe.layers[layerIndex].wmsLayer.MaxDepth < coords.zoom)
             {
-                var zoomDifference = (coords.zoom - globe.layers[layerIndex].wmsLayer.MaxDepth);
-                var zoomScale = Mathf.Pow(0.5f, zoomDifference);
+                int zoomDifference = (coords.zoom - globe.layers[layerIndex].wmsLayer.MaxDepth);
+                float zoomScale = Mathf.Pow(0.5f, zoomDifference);
 
                 currentMaterial.SetTextureOffset(newTexParam, new Vector2((coords.col*zoomScale)%1.0f, (1.0f - (coords.row*zoomScale)%1.0f) - zoomScale));
                 currentMaterial.SetTextureScale(newTexParam, new Vector2(zoomScale, zoomScale));
@@ -512,22 +502,22 @@ namespace GlobeNS
 
         public void SetTransitionProgress(int layerIndex, float progress)
         {
-            string blendParam = SHADER_BLEND_NAMES[layerIndex];
+            string blendParam = shaderBlendNames[layerIndex];
             GetComponent<Renderer>().material.SetFloat(blendParam, progress);
         }
 
         private void RequestTexture(Layer layer, DateTime date, TextureDownloadHandler handler, int layerNum)
         {
-            URL = layer.WmtsToUrl(coords, date);
+            url = layer.WmtsToUrl(coords, date);
 
             // Load from cache if possible
-            if (globe.tileTextureCache.ExistsInCache(URL))
+            if (globe.tileTextureCache.ExistsInCache(url))
             {
-                handler(layer.identifier, date, globe.tileTextureCache.GetTexture(URL));
+                handler(layer.identifier, date, globe.tileTextureCache.GetTexture(url));
             }
             else
             {
-                globe.downloader.RequestTexture(URL, layer.identifier, date, handler, queueNum: layerNum + 1);
+                globe.downloader.RequestTexture(url, layer.identifier, date, handler, queueNum: layerNum + 1);
             }
         }
     }

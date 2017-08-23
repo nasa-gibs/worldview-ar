@@ -3,18 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using GlobeNS;
+using EVRTH.Scripts.GlobeNS;
+using EVRTH.Scripts.Visualization;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Utility
+namespace EVRTH.Scripts.Utility
 {
     public class DownloadManager : MonoBehaviour
     {
         public int requestsPerFrame = 2;
         public int tileTextureLoadsPerFrame = 2;
 
-        public readonly int numQueues = Globe.MAX_LAYERS + 1; // One queue for each layer plus a default layer
+        public readonly int numQueues = Globe.MaxLayers + 1; // One queue for each layer plus a default layer
         private int nextQueue;
         private readonly List<Queue<DownloadTask>> downloadQueues = new List<Queue<DownloadTask>>();
 
@@ -122,7 +123,7 @@ namespace Utility
                     if (globeTileLayerSet.usingDxtFormat)
                     {
                         // Import DXT file
-                        Texture2D myTexture = DDSTextureLoader.LoadTextureDXT (globeTileLayerSet.localFilePath, TextureFormat.DXT1);
+                        Texture2D myTexture = DDSTextureLoader.LoadTextureDxt (globeTileLayerSet.localFilePath, TextureFormat.DXT1);
                         globeTileLayerSet.texture = myTexture;
                     }
                     else
@@ -274,7 +275,7 @@ namespace Utility
             ongoingDownloadCount--;
         }
 
-        private bool IsTextureInCache(DownloadTask downloadTask)
+        private static bool IsTextureInCache(DownloadTask downloadTask)
         {
             bool fileExists = false;
             downloadTask.usingDxtFormat = false;
@@ -300,14 +301,12 @@ namespace Utility
             // out the file hierarchy a bit more.
             modifiedQueryStringBuilder.Replace("%3D", "/");
 
-//        print ( fileUrl.AbsolutePath  + "\t"  +modifiedQueryStringBuilder.ToString ());
-            StringBuilder ddsFilenameStringBuilder;// = new StringBuilder(modifiedQueryStringBuilder.ToString());
-            StringBuilder pngFilenameStringBuilder;// = new StringBuilder(modifiedQueryStringBuilder.ToString());
-            StringBuilder jpgFilenameStringBuilder;// = new StringBuilder(modifiedQueryStringBuilder.ToString());
+            StringBuilder ddsFilenameStringBuilder;
+            StringBuilder pngFilenameStringBuilder;
+            StringBuilder jpgFilenameStringBuilder;
             if (modifiedQueryStringBuilder.Length > 0)
             {
                 string path = Application.dataPath + "/StreamingAssets" + fileUrl.AbsolutePath + modifiedQueryStringBuilder;
-//            print ("length non zero  " + path);
                 ddsFilenameStringBuilder = new StringBuilder (path);
                 pngFilenameStringBuilder = new StringBuilder (path);
                 jpgFilenameStringBuilder = new StringBuilder (path);
@@ -315,7 +314,6 @@ namespace Utility
             else
             {
                 string path = Application.dataPath + "/StreamingAssets" + fileUrl.AbsolutePath.Remove (fileUrl.AbsolutePath.Length - 4, 4);
-//            print ("length == 0   " + path);
                 ddsFilenameStringBuilder = new StringBuilder(path);
                 pngFilenameStringBuilder = new StringBuilder(path);
                 jpgFilenameStringBuilder = new StringBuilder(path);
@@ -340,7 +338,6 @@ namespace Utility
             else if (File.Exists (pngPath))
             {
                 // Necessary due to how the browser processes % symbols
-//            fileLocation = fileLocation.Replace ("%", "%25");
                 downloadTask.localFilePath = pngPath;
                 downloadTask.usingDxtFormat = false;
                 fileExists = true;
@@ -349,7 +346,6 @@ namespace Utility
             else if (File.Exists (jpgPath))
             {
                 // Necessary due to how the browser processes % symbols
-//            fileLocation = fileLocation.Replace ("%", "%25");
                 downloadTask.localFilePath = jpgPath;
                 downloadTask.usingDxtFormat = false;
                 fileExists = true;
@@ -396,17 +392,16 @@ namespace Utility
                     myTexture.LoadImage(www.downloadHandler.data, false);
 
 
-#if UNITY_EDITOR
-                    if( cacheTextures )
-                    {
-                        // Copy into StreamingAssets
-                        string fileDirectory = Path.GetDirectoryName(downloadTask.localFilePath);
-//                    print( "PATH CHECK   " + fileLocation + "\t" + localFilePath + "\t" + fileDirectory );
-                        System.Diagnostics.Debug.Assert(fileDirectory != null, "fileDirectory != null");
-                        Directory.CreateDirectory(fileDirectory);
-                        File.WriteAllBytes(downloadTask.localFilePath, www.downloadHandler.data);
-                    }
-#endif
+//#if UNITY_EDITOR
+//                    if( cacheTextures )
+//                    {
+//                        // Copy into StreamingAssets
+//                        string fileDirectory = Path.GetDirectoryName(downloadTask.localFilePath);
+//                        System.Diagnostics.Debug.Assert(fileDirectory != null, "fileDirectory != null");
+//                        Directory.CreateDirectory(fileDirectory);
+//                        File.WriteAllBytes(downloadTask.localFilePath, www.downloadHandler.data);
+//                    }
+//#endif
 
                     if (downloadTask.prepareTextureForRendering)
                     {

@@ -1,8 +1,9 @@
 ﻿using System;
-using GIBS;
+using EVRTH.Scripts.GIBS;
+using EVRTH.Scripts.Utility;
 using UnityEngine;
 
-namespace GlobeNS
+namespace EVRTH.Scripts.GlobeNS
 {
     public abstract class AbstractGlobe : MonoBehaviour
     {

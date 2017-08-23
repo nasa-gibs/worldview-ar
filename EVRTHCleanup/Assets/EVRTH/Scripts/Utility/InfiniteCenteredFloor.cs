@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Utility
+namespace EVRTH.Scripts.Utility
 {
     public class InfiniteCenteredFloor : MonoBehaviour 
     {
@@ -58,7 +58,7 @@ namespace Utility
         private void RecenterFloor()
         {
             // Get the location of the floor rounded to grid-space space
-            var quantizedLocation = transform.position;
+            Vector3 quantizedLocation = transform.position;
             if (floorGridSize.x > 0)
             {
                 quantizedLocation.x = Mathf.Round(quantizedLocation.x / floorGridSize.x) * floorGridSize.x;

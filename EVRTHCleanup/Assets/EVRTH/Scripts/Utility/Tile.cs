@@ -1,20 +1,20 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using GlobeNS;
+using EVRTH.Scripts.GlobeNS;
+using EVRTH.Scripts.Visualization;
+using EVRTH.Scripts.WMS;
 using UnityEngine;
-using Visualiation;
-using WMS;
 
-namespace Utility
+namespace EVRTH.Scripts.Utility
 {
+    /// <summary>
+    /// Holds the correct information for each tile on a layer. 
+    /// Most important is the science data texture
+    /// </summary>
     [Serializable]
     public class Tile 
     {
-        public LatLonBoundingBox bBox;
-
-        private IEnumerator downloadTask;
-    
+        public LatLonBoundingBox bBox;   
         public Texture2D scienceDataTexture;
 
         public AbstractGlobe globe;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 
 
@@ -93,5 +94,23 @@ public struct VertexAndUvContainer
 public delegate void TextureDownloadHandler(string layer, DateTime date, Texture texture); 
 
 #endregion
+
+public class Methodtimer : IDisposable
+{
+    private Stopwatch sw;
+    private readonly string msg;
+    public Methodtimer(string message)
+    {
+        msg = message;
+        sw = new Stopwatch();
+        sw.Start();
+    }
+    public void Dispose()
+    {
+        sw.Stop();
+        UnityEngine.Debug.Log(msg + " " + sw.Elapsed);
+        sw = null;
+    }
+}
 
 

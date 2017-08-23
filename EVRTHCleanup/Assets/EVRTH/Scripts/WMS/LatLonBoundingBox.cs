@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace WMS
+namespace EVRTH.Scripts.WMS
 {
     public class LatLonBoundingBox
     {

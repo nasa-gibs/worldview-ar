@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using EVRTH.Scripts.WMS;
 using UnityEngine;
-using WMS;
 
-namespace GIBS
+namespace EVRTH.Scripts.GIBS
 {
     public class Layer
     {

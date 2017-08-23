@@ -2,14 +2,12 @@
 using System.IO;
 using UnityEngine;
 
-namespace Utility
+namespace EVRTH.Scripts.Utility
 {
     public static class DDSTextureLoader
     {
-        public static Texture2D LoadTextureDXT(string ddsFilename, TextureFormat textureFormat)
+        public static Texture2D LoadTextureDxt(string ddsFilename, TextureFormat textureFormat)
         {
-            //Debug.Log("Attempting load of " + ddsFilename);
-
             byte[] ddsBytes;
 
             try
@@ -39,21 +37,12 @@ namespace Utility
             int height = ddsBytes[13] * 256 + ddsBytes[12];
             int width = ddsBytes[17] * 256 + ddsBytes[16];
 
-            //Debug.Log("Header as hex:");
-            //byte[] headerBytes = new byte[128];
-            //Buffer.BlockCopy(ddsBytes, 0, headerBytes, 0, 128);
-            //string hex = BitConverter.ToString(headerBytes);
-            //hex = hex.Replace("-", " ");
-            //Debug.Log(hex);
-
-            int DDS_HEADER_SIZE = 128;
-            byte[] dxtBytes = new byte[ddsBytes.Length - DDS_HEADER_SIZE];
-            Buffer.BlockCopy(ddsBytes, DDS_HEADER_SIZE, dxtBytes, 0, ddsBytes.Length - DDS_HEADER_SIZE);
+            const int ddsHeaderSize = 128;
+            byte[] dxtBytes = new byte[ddsBytes.Length - ddsHeaderSize];
+            Buffer.BlockCopy(ddsBytes, ddsHeaderSize, dxtBytes, 0, ddsBytes.Length - ddsHeaderSize);
 
             Texture2D texture = new Texture2D(width, height, textureFormat, true);
         
-            //Debug.Log("Attempting load of " + dxtBytes.Length + " bytes, for " + width + " by " + height + " image of format " + textureFormat + " for a mipmap count of " + texture.mipmapCount);
-
             texture.LoadRawTextureData(dxtBytes);
             texture.Apply();
 

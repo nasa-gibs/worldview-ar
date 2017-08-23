@@ -2,19 +2,18 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
+using EVRTH.Scripts.WMS;
 using UnityEngine;
-using WMS;
 using Debug = System.Diagnostics.Debug;
 
-namespace GIBS
+namespace EVRTH.Scripts.GIBS
 {
     public static class LayerLoader
     {
-
-        private static string gcPath = "XML/wmtsGC";
-        private static string wmsGcPath = "XML/wmsGC";
-        private static string matrixSetPath = "XML/TileMatrixSets";
-        private static string defaultTileMatrixSet = "250m";
+        private const string gcPath = "XML/wmtsGC";
+        private const string wmsGcPath = "XML/wmsGC";
+        private const string matrixSetPath = "XML/TileMatrixSets";
+        private const string defaultTileMatrixSet = "250m";
 
         private static string tileMatrixAsset;
         private static string wmsGcAsset;
@@ -243,11 +242,6 @@ namespace GIBS
             }
 
             Layer layer = new Layer { identifier = identifier, title = title, format = format, colormapUrl = colormapUrl, bbox = bbox, useOnline = useOnline, tileMatrixSetIdentifier = tileMatrixSetIdentifier };
-            // Call LoadColorMap to manually force a colormap load (careful with too many requests)
-            //layer.LoadColorMap ();
-
-
-
             return layer;
         }
 

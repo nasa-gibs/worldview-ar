@@ -1,8 +1,8 @@
 ﻿using System;
+using EVRTH.Scripts.WMS;
 using UnityEngine;
-using WMS;
 
-namespace Geometry
+namespace EVRTH.Scripts.Geometry
 {
     /// <summary>
     /// Geometric representation of an Ellipsoid.

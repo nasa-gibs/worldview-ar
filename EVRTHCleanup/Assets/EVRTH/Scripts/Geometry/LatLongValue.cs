@@ -2,7 +2,7 @@
 
 // A simple struct use to pair up lat/long combinations with their respective scientific value,
 // used to store this data in order to do statistical analysis before visualizing it.
-namespace Geometry
+namespace EVRTH.Scripts.Geometry
 {
     public struct LatLongValue
     {
@@ -24,7 +24,7 @@ namespace Geometry
 
         public static LatLongValue GetLatLonFrom3DPoint(Vector3 point, Transform planetTransform)
         {
-            var latLon = new LatLongValue();
+            LatLongValue latLon = new LatLongValue();
             Vector3 normalizedVectorToPoint = (point - planetTransform.position).normalized;
             Vector3 vectorInEarthSpace = planetTransform.InverseTransformDirection(normalizedVectorToPoint);
 

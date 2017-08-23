@@ -1,5 +1,5 @@
 ﻿
-namespace WMS
+namespace EVRTH.Scripts.WMS
 {
     public struct LatLon
     {

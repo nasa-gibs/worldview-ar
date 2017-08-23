@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using UnityEngine;
 
-namespace GIBS
+namespace EVRTH.Scripts.GIBS
 {
     public class ColorMap
     {

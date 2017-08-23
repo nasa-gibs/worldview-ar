@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using GlobeNS;
+using EVRTH.Scripts.GlobeNS;
+using EVRTH.Scripts.Utility;
+using EVRTH.Scripts.Visualization;
 using UnityEngine;
 using UnityEngine.UI;
-using Visualiation;
+using Debug = UnityEngine.Debug;
 
-namespace GIBS
+namespace EVRTH.Scripts.GIBS
 {
     /// <summary>
     /// Controls the application of layers through the dropdown ui.
@@ -17,30 +20,24 @@ namespace GIBS
         private Globe globe;
         private LayerApplier layerApplier;
 
-        public Dropdown flatLayerDropdown0;
+        public Dropdown flatLayerDropdown;
 
-        public Dropdown extrudedlayerDropdown0;
+        public Dropdown extrudedlayerDropdown;
 
-        private bool itemsLoaded;
-
-        private void Start()
+        private IEnumerator Start()
         {
             globe = GetComponent<Globe>();
             layerApplier = GetComponent<LayerApplier>();
-
-            if (flatLayerDropdown0 == null)
+            WaitForEndOfFrame wait = new WaitForEndOfFrame();
+            if (flatLayerDropdown == null)
             {
-                flatLayerDropdown0 = FindObjectOfType<Dropdown>();
+                flatLayerDropdown = FindObjectOfType<Dropdown>();
             }
-        }
-
-        private void Update()
-        {
-            if (!itemsLoaded && globe.parsedAvailableLayers && globe.availableLayers != null)
+            while (!globe.parsedAvailableLayers || globe.availableLayers == null)
             {
-                PopulateDropdownItems();
+                yield return wait;
             }
-
+            PopulateDropdownItems();
         }
 
         private void PopulateDropdownItems()
@@ -53,27 +50,24 @@ namespace GIBS
                 options.Add(newOption);
             }
 
-            flatLayerDropdown0.options = options;
+            flatLayerDropdown.options = options;
 
-            if (extrudedlayerDropdown0 != null)
+            if (extrudedlayerDropdown != null)
             {
-                extrudedlayerDropdown0.options =
+                extrudedlayerDropdown.options =
                     new List<Dropdown.OptionData> {new Dropdown.OptionData("AMSR2_Surface_Rain_Rate_Day"), new Dropdown.OptionData("AIRS_CO_Total_Column_Day") };
             }
-
-
-            itemsLoaded = true;
         }
 
-        public void OnFlatLayer0DropdownChange()
+        public void OnFlatLayerDropdownChange()
         {
-            UpdateGlobeLayer(0, flatLayerDropdown0, false);
+            UpdateGlobeLayer(0, flatLayerDropdown, false);
         }
 
 
-        public void OnExtrudedLayer0DropdownChange()
+        public void OnExtrudedLayerDropdownChange()
         {
-            UpdateGlobeLayer(0, extrudedlayerDropdown0, true);
+            UpdateGlobeLayer(0, extrudedlayerDropdown, true);
         }
 
 
@@ -94,20 +88,6 @@ namespace GIBS
                     Debug.LogFormat("Setting flat layer {0} to {1}", layerIndex, layerName);
                     layerApplier.ApplyLayer(layerName, new DateTime(2016, 8, 16), LayerApplier.LayerVisualizationStyle.Flat, layerIndex);
                 }
-            }
-        }
-
-        private void UpdateGlobeLayerByName(int layerIndex, string layerName, bool isExtruded, DateTime dateTime)
-        {
-            if (isExtruded)
-            {
-                Debug.LogFormat("Setting extruded layer {0} to {1}", layerIndex, layerName);
-                layerApplier.ApplyLayer(layerName, dateTime, LayerApplier.LayerVisualizationStyle.Volumetric, layerIndex);
-            }
-            else
-            {
-                Debug.LogFormat("Setting flat layer {0} to {1}", layerIndex, layerName);
-                layerApplier.ApplyLayer(layerName, dateTime, LayerApplier.LayerVisualizationStyle.Flat, layerIndex);
             }
         }
     }

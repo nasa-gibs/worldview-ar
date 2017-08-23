@@ -3,13 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using Geometry;
-using GIBS;
+using EVRTH.Scripts.Geometry;
+using EVRTH.Scripts.GIBS;
+using EVRTH.Scripts.Utility;
+using EVRTH.Scripts.Visualization;
+using EVRTH.Scripts.WMS;
 using UnityEngine;
-using Utility;
-using WMS;
 
-namespace GlobeNS
+namespace EVRTH.Scripts.GlobeNS
 {
     public class Globe : AbstractGlobe
     {
@@ -77,7 +78,7 @@ namespace GlobeNS
         }
 
         // Maximum number of layers supported by the globe shader.
-        public static readonly int MAX_LAYERS = 3;
+        public static readonly int MaxLayers = 3;
         public GlobeLayerInfo[] layers;
 
         //Status properties
@@ -137,9 +138,9 @@ namespace GlobeNS
         {
             cullingCamera = FindVrCamera() ?? Camera.main;
 
-            layers = new GlobeLayerInfo[MAX_LAYERS];
+            layers = new GlobeLayerInfo[MaxLayers];
 
-            for (int i = 0; i < MAX_LAYERS; i++)
+            for (int i = 0; i < MaxLayers; i++)
             {
                 // Reset layer
                 layers[i] = new GlobeLayerInfo();
@@ -148,7 +149,7 @@ namespace GlobeNS
 
         public override void ClearLayers()
         {
-            for (int i = 0; i < MAX_LAYERS; i++)
+            for (int i = 0; i < MaxLayers; i++)
             {
                 // Reset layer
                 layers[i] = new GlobeLayerInfo();
@@ -171,7 +172,7 @@ namespace GlobeNS
 
         private IEnumerator Start()
         {
-            //instatiate stored components
+            //instantiate stored components
             downloader = GetComponent<DownloadManager>();
             tileFactory = GetComponent<TileFactory>();
             if (tileTextureCache == null)
@@ -185,7 +186,7 @@ namespace GlobeNS
             //this is done before the information is needed because you cannot access TextAsset from a thread
             LayerLoader.Init();
 
-            //Kick off the main xml parsing in a thread to keep the application from hanging, exspecially for vr
+            //Kick off the main xml parsing in a thread to keep the application from hanging, especially for vr
             new Thread(() =>
             {
                 //get the available layers by parsing the xml
@@ -211,9 +212,9 @@ namespace GlobeNS
             if (cachedShowGrid != wireFrameMode)
             {
                 // If material changed from wireframe to map, make sure we cross-fade back
-                // If we changed from a map to wireframe, we'll skip the crossfade;
+                // If we changed from a map to wireframe, we'll skip the cross-fade;
                 // consider it to have already occurred
-                for (int i = 0; i < MAX_LAYERS; i++)
+                for (int i = 0; i < MaxLayers; i++)
                 {
                     layers[i].status = LayerStatus.Loading;
                 }
@@ -305,7 +306,7 @@ namespace GlobeNS
         {
             updateTileVisibilityCoroutineCount++;
 
-            while (true)
+            while (Application.isPlaying)
             {
                 parentTilesUpdated = 0;
                 for (int i = 0; i < rootTiles.Length; i++)
@@ -369,7 +370,7 @@ namespace GlobeNS
 
         public override void LoadLayer(int index, string layerName, DateTime date)
         {
-            if (index >= MAX_LAYERS)
+            if (index >= MaxLayers)
             {
                 throw new ArgumentException("Too many layers");
             }
@@ -391,8 +392,8 @@ namespace GlobeNS
 
         public void GetLayerNames(string[] layerArray)
         {
-            var index = 0;
-            while (index < MAX_LAYERS)
+            int index = 0;
+            while (index < MaxLayers)
             {
                 layerArray[index] = layers[index].name;
                 if (string.IsNullOrEmpty(layerArray[index]))
