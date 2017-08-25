@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using EVRTH.Scripts.GlobeNS;
 using EVRTH.Scripts.Visualization;
 using SwarmDownload.Scripts;
@@ -74,7 +72,6 @@ namespace EVRTH.Scripts.Utility
             }
             globeTileQueueSize = totalQueueSize;
 
-            //ProcessDownloadQueues();
             ProcessTextureQueue();
         }
 
@@ -127,7 +124,7 @@ namespace EVRTH.Scripts.Utility
                         Texture2D myTexture;
                         if (useDownloadHandlerGetContent)
                         {
-                            myTexture = t;
+                            myTexture = DownloadHandlerTexture.GetContent(t);
 
                             if (globeTileLayerSet.prepareTextureForRendering)
                             {
@@ -137,7 +134,8 @@ namespace EVRTH.Scripts.Utility
                         }
                         else
                         {
-                            myTexture = t;
+                            myTexture = new Texture2D(2, 2, TextureFormat.RGB24, true, linearTextures);
+                            myTexture.LoadImage(t.downloadHandler.data, false);
                             if (globeTileLayerSet.prepareTextureForRendering)
                             {
                                 myTexture.wrapMode = TextureWrapMode.Clamp;
@@ -214,31 +212,6 @@ namespace EVRTH.Scripts.Utility
                 downloadRequests.Remove(task.url);
             }
             queue.Clear();
-        }
-
-        private void ProcessDownloadQueues()
-        {
-            int requestSubmitted = 0;
-            int numEmptyQueues = 0;
-
-            while (requestSubmitted < requestsPerFrame &&
-                   numEmptyQueues < downloadQueues.Count &&
-                   ongoingDownloadCount < maxOngoingDownloads)
-            {
-                Queue<DownloadTask> queue = downloadQueues[nextQueue];
-
-                if (queue.Count > 0)
-                {
-                    StartCoroutine(DownloadTexture(queue.Dequeue()));
-                    requestSubmitted += 1;
-                }
-                else
-                {
-                    numEmptyQueues += 1;
-                }
-
-                nextQueue = (nextQueue + 1) % downloadQueues.Count;
-            }
         }
 
         private void ProcessTextureQueue()

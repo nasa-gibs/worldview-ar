@@ -58,15 +58,10 @@ namespace EVRTH.Scripts.Utility
             if (isZoom)
             {
                 float newDist = Vector3.Distance(transform.position, globeTransform.position);
-                if (newDist - oldDist > scaleThreshold && globeTransform.localScale.x < 2.75f)
+                if (newDist - oldDist > scaleThreshold && globeTransform.localScale.x < 2.75f || oldDist - newDist > scaleThreshold && globeTransform.localScale.x > 0.25f)
                 {
+                    globeTransform.localScale += Vector3.one * scaleSpeed * (newDist - oldDist) * Time.deltaTime;
                     oldDist = newDist;
-                    globeTransform.localScale += Vector3.one * scaleSpeed * Time.deltaTime;
-                }
-                else if (oldDist - newDist > scaleThreshold && globeTransform.localScale.x > 0.25f)
-                {
-                    oldDist = newDist;
-                    globeTransform.localScale -= Vector3.one * scaleSpeed * Time.deltaTime;
                 }
             }
 

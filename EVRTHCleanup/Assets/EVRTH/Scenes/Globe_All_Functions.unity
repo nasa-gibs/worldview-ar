@@ -4885,8 +4885,8 @@ MonoBehaviour:
   vrNode: 5
   globeTransform: {fileID: 1473393869}
   globeRotSpeed: 35
-  scaleThreshold: 0.1
-  scaleSpeed: 10
+  scaleThreshold: 0.01
+  scaleSpeed: 100
 --- !u!4 &1607052602
 Transform:
   m_ObjectHideFlags: 0

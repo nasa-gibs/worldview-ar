@@ -48,8 +48,8 @@ namespace SwarmDownload.Scripts
                 }
                 else
                 {
-                    Texture2D newTex = DownloadHandlerTexture.GetContent(www);
-                    currRequest.callbackAction.Invoke(newTex);
+                    //Texture2D newTex = DownloadHandlerTexture.GetContent(www);
+                    currRequest.callbackAction.Invoke(www);
                 }
                 jobs--;
             }

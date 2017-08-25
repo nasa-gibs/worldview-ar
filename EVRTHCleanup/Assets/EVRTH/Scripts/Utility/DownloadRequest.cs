@@ -1,12 +1,12 @@
 ﻿using System;
-using UnityEngine;
+using UnityEngine.Networking;
 
 namespace SwarmDownload.Scripts
 {
     public struct DownloadRequest
     {
         public string url;
-        public Action<Texture2D> callbackAction;
+        public Action<UnityWebRequest> callbackAction;
     }
 
 }
