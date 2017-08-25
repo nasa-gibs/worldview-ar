@@ -13,7 +13,7 @@ namespace EVRTH.Scripts.Utility
         public DateTime date;
         public TextureDownloadHandler handler;
         public bool prepareTextureForRendering;
-        public Texture texture;
+        public Texture2D texture;
         public string localFilePath;
         public bool usingDxtFormat;
     }
