@@ -36,7 +36,7 @@ namespace EVRTH.Scripts.Visualization
         public int StackPartitions { get; set; }
         public int SlicePartitions { get; set; }
 
-        public bool averagingDataRangeBounds;
+        //public bool averagingDataRangeBounds;
 
         // Counts how many tiles are contributing to each vertex, so that
         // averages can be adequately incorporated
@@ -197,11 +197,33 @@ namespace EVRTH.Scripts.Visualization
 
                 if (value > 0.0f)
                 {
+                    int contributionsAlreadyMadeToThisVertex = 0;
+
+                    try
+                    {
+                        contributionsAlreadyMadeToThisVertex = globeVertexContributionCount[vertexIndex];
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogError("Exception " + e.Message + " Was trying to get element " + vertexIndex + " of " + globeVertexContributionCount.Length + " elements!!");
+                    }
+
                     float percentageThroughRange = (value - minValue) / (maxValue - minValue);
                     float vertexHeight = minEarthRadius + percentageThroughRange * (maxEarthRadius - minEarthRadius);
 
-                    vertices[vertexIndex] = vertices[vertexIndex].normalized * vertexHeight;
-
+                    if (contributionsAlreadyMadeToThisVertex > 0)
+                    {
+                        // Average with other values
+                        float currentVertexHeight = vertices[vertexIndex].magnitude;
+                        float averageVertexHeight =
+                            (currentVertexHeight * (float) contributionsAlreadyMadeToThisVertex + vertexHeight) /
+                            ((float) contributionsAlreadyMadeToThisVertex + 1);
+                        vertices[vertexIndex] = vertices[vertexIndex].normalized * averageVertexHeight;
+                    }
+                    else
+                    {
+                        vertices[vertexIndex] = vertices[vertexIndex].normalized * vertexHeight;
+                    }
                     colors[vertexIndex] = pixelColor;
 
                     // Adjust alpha

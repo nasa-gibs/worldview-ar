@@ -143,7 +143,7 @@ namespace EVRTH.Scripts.Utility
                                 myTexture.anisoLevel = globalAnisoLevel;
                                 myTexture.Apply(true, true);
                             }
-                            print(myTexture.width + " " + myTexture.height);
+                            //print(myTexture.width + " " + myTexture.height);
                         }
 
                         globeTileLayerSet.texture = myTexture;
