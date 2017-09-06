@@ -216,10 +216,10 @@ namespace EVRTH.Scripts.Utility
 
         private void ProcessTextureQueue()
         {
-            Debug.Log("Processing tile texture loads!");
+            //Debug.Log("Processing tile texture loads!");
             for (int i = 0; i < tileTextureLoadsPerFrame; i++)
             {
-                Debug.Log("Processing load #" + i);
+                //Debug.Log("Processing load #" + i);
                 if (globeTileTexturesToLoadQueue.Count > 0)
                 {
                     DownloadTask task = globeTileTexturesToLoadQueue.Dequeue();
