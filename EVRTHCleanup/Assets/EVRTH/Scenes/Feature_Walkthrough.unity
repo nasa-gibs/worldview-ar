@@ -5637,7 +5637,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectedLayer: 
-  initialLayer: BlueMarble_ShadedRelief_Bathymetry
+  initialLayer: BlueMarble_NextGeneration
   forceZoomLevel: 0
   zoomLevelToForce: 0
   tileTemplate: {fileID: 1000011561971184, guid: 197fc272b2dbfde45824bc18b982bf9e,
@@ -5739,13 +5739,13 @@ MonoBehaviour:
   globeTileQueueSize: 4
   ongoingTextureLoadCount: 0
   ongoingDownloadCount: 0
-  maxOngoingDownloads: 4
+  maxOngoingDownloads: 8
   useDownloadHandlerGetContent: 0
   globalMipMapBias: 0
   globalAnisoLevel: 0
   initialized: 0
   linearTextures: 1
-  cacheTextures: 0
+  cacheTextures: 1
 --- !u!4 &1473393869
 Transform:
   m_ObjectHideFlags: 0
@@ -7968,14 +7968,13 @@ MonoBehaviour:
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
   stepDescriptionsList:
-  - Welcome to the GIBS EVRTH feature showcase. This demo will show you what the EVRTH
-    plugin can do. To advance to the next visualization press 'enter' or the 'trigger'
-    button on your vr controller.
-  - Multiple GIBS layers can be overlayed ontop of eachother to show multiple datasets
-    at a time. The Blue marble and coastlines datasets are currently shown.
-  - The Coastlines layer can be particulary helpful when displaying datasets that
-    do not show a clear reference to the geography and you do not want the have a
-    colored base layer
+  - Humans can have a dramatic impact on the Earth in a very short time.  We start
+    fires every year to clear land.  You can see evidence of this in EVRTH
+  - These fires pump smoke and CO into the atmosphere over time, affecting large parts
+    of the planet.  You can view these effects as an volumetric visualization in EVRTH.
+  - "In 2015, El Nino disrupted rain patterns in Asia.  The fires weren\u2019t put
+    out as usual, making the CO spread far worse.  You can understand this unfortunate
+    combination by viewing multiple volumetric datasets over time in EVRTH."
   - Each dataset can be animated to show change over time.
   - Some datasets can be sparse, or even completely black on some time slices.
   - For the more sparse datasets a volumetric display can be more interesting than
@@ -7985,7 +7984,12 @@ MonoBehaviour:
   currAction: 0
   cooldown: 1
   stepDescriptionDisplay: {fileID: 114341387}
-  nextStep: 0
+  dateLabelText: {fileID: 372864235}
+  nextStepTrigger: 0
+  prepAnimationTrigger: 0
+  playAnimationTrigger: 0
+  stopAnimationTrigger: 0
+  animLayer: 0
 --- !u!82 &1750970966
 AudioSource:
   m_ObjectHideFlags: 0

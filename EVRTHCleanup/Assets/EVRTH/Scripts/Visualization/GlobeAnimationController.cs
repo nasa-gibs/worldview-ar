@@ -66,7 +66,7 @@ namespace EVRTH.Scripts.Visualization
         {
             if (start >= end)
             {
-                throw new ArgumentException("Animation start time must be after end time");
+                throw new ArgumentException("Animation start time must be before end time");
             }
 
             StartTime = start;

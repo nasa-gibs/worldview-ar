@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using EVRTH.Scripts.GIBS;
 using EVRTH.Scripts.GlobeNS;
 using EVRTH.Scripts.Visualization;
 using UnityEngine;
@@ -18,9 +19,17 @@ namespace EVRTH.Scripts.Utility
         public int currAction;
         public float cooldown;
         public Text stepDescriptionDisplay;
-        public bool nextStep;
+        public Text dateLabelText;
+        public bool nextStepTrigger;
+        public bool prepAnimationTrigger;
+        public bool playAnimationTrigger;
+        public bool stopAnimationTrigger;
+        public float animLayer;
+        public DateTime startDate = new DateTime(2016, 10, 1);
+        public DateTime endDate = new DateTime(2016, 11, 1);
         private float lastAction;
         private bool isReady;
+        private GlobeAnimationController animationController;
 
         private IEnumerator Start()
         {
@@ -33,6 +42,7 @@ namespace EVRTH.Scripts.Utility
             }
             NextAction();
             isReady = true;
+            animationController = globe.GetComponent<GlobeAnimationController>();
         }
 
         //sets up pre-scripted layer changes
@@ -48,7 +58,7 @@ namespace EVRTH.Scripts.Utility
                 actions.Add(new UnityEvent());
             (actions[0] ?? (actions[0] = new UnityEvent())).AddListener(() =>
             {
-                UpdateGlobeLayer(0, "BlueMarble_ShadedRelief_Bathymetry");
+                UpdateGlobeLayer(0, "BlueMarble_NextGeneration");//"BlueMarble_ShadedRelief_Bathymetry");
                 stepDescriptionDisplay.text = stepDescriptionsList[0];
             });
 
@@ -102,10 +112,9 @@ namespace EVRTH.Scripts.Utility
         private void Update()
         {
             if (!isReady) return;
-            //if vr controller trigger or enter/return is pressed
-            if (nextStep)
+            if (nextStepTrigger)
             {
-                nextStep = false;
+                nextStepTrigger = false;
                 //and enough time has elapsed
                 if (Time.realtimeSinceStartup - lastAction > cooldown)
                 {
@@ -113,6 +122,24 @@ namespace EVRTH.Scripts.Utility
                     NextAction();
                     lastAction = Time.realtimeSinceStartup;
                 }
+            }
+
+            if (prepAnimationTrigger)
+            {
+                prepAnimationTrigger = false;
+                PrepAnimation();
+            }
+
+            if (playAnimationTrigger)
+            {
+                playAnimationTrigger = false;
+                PlayAnimation();
+            }
+
+            if (stopAnimationTrigger)
+            {
+                stopAnimationTrigger = false;
+                StopAnimation();
             }
         }
 
@@ -128,6 +155,24 @@ namespace EVRTH.Scripts.Utility
 
             //increment the current action
             currAction++;
+        }
+
+        public void PrepAnimation()
+        {
+            Debug.LogFormat("Preparing animation from {0} to {1}", startDate, endDate);
+            Layer layer = globe.layers[1].wmsLayer;
+            animationController.PrepareAnimation(startDate, endDate, 31, new List<Layer> { layer });
+            animationController.OnAnimationStep += OnAnimationStep;
+        }
+
+        public void PlayAnimation(float duration = 30f)
+        {
+            animationController.StartAnimation(duration);
+        }
+
+        public void StopAnimation()
+        {
+            animationController.StopAnimation();
         }
 
         private void UpdateGlobeLayer(int layerIndex,string layerName, bool isExtruded = false)
@@ -147,6 +192,11 @@ namespace EVRTH.Scripts.Utility
                     layerApplier.ApplyLayer(layerName, new DateTime(2016, 8, 16), LayerApplier.LayerVisualizationStyle.Flat, layerIndex);
                 }
             }
+        }
+
+        private void OnAnimationStep(DateTime date, float animProgress)
+        {
+            dateLabelText.text = string.Format("Current Date: {0:MM/dd/yyyy}", date);
         }
     }
 }
