@@ -18,6 +18,7 @@ namespace EVRTH.Scripts.Utility
         public int currAction;
         public float cooldown;
         public Text stepDescriptionDisplay;
+        public bool nextStep;
         private float lastAction;
         private bool isReady;
 
@@ -55,7 +56,7 @@ namespace EVRTH.Scripts.Utility
                 actions.Add(new UnityEvent());
             (actions[1] ?? (actions[1] = new UnityEvent())).AddListener(() =>
             {
-                UpdateGlobeLayer(1, "Coastlines");
+                UpdateGlobeLayer(1, "MODIS_Fires_All");
                 stepDescriptionDisplay.text = stepDescriptionsList[1];
             });
 
@@ -63,7 +64,7 @@ namespace EVRTH.Scripts.Utility
                 actions.Add(new UnityEvent());
             (actions[2] ?? (actions[2] = new UnityEvent())).AddListener(() =>
             {
-                UpdateGlobeLayer(0, "AMSR2_Columnar_Water_Vapor_Day");
+                UpdateGlobeLayer(0, "AIRS_CO_Total_Column_Day",true);
                 stepDescriptionDisplay.text = stepDescriptionsList[2];
             });
 
@@ -71,6 +72,7 @@ namespace EVRTH.Scripts.Utility
                 actions.Add(new UnityEvent());
             (actions[3] ?? (actions[3] = new UnityEvent())).AddListener(() =>
             {
+                UpdateGlobeLayer(2, "AMSR2_Surface_Rain_Rate_Day");
                 stepDescriptionDisplay.text = stepDescriptionsList[3];
             });
 
@@ -78,7 +80,6 @@ namespace EVRTH.Scripts.Utility
                 actions.Add(new UnityEvent());
             (actions[4] ?? (actions[4] = new UnityEvent())).AddListener(() =>
             {
-                UpdateGlobeLayer(0, "AMSR2_Surface_Rain_Rate_Day");
                 stepDescriptionDisplay.text = stepDescriptionsList[4];
             });
 
@@ -102,8 +103,9 @@ namespace EVRTH.Scripts.Utility
         {
             if (!isReady) return;
             //if vr controller trigger or enter/return is pressed
-            if (Input.GetButtonDown("Submit") || Input.GetButtonDown("VRSubmit"))
+            if (nextStep)
             {
+                nextStep = false;
                 //and enough time has elapsed
                 if (Time.realtimeSinceStartup - lastAction > cooldown)
                 {

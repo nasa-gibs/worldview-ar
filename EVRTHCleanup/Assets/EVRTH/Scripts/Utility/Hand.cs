@@ -16,6 +16,8 @@ namespace EVRTH.Scripts.Utility
         public float globeRotSpeed;
         public float scaleThreshold;
         public float scaleSpeed;
+        public bool useLaserPointer;
+        public LineRenderer laserPointerRenderer;
     
 
         private new Transform transform;
@@ -29,6 +31,15 @@ namespace EVRTH.Scripts.Utility
         {
             transform = GetComponent<Transform>();
             InputTracking.Recenter();
+            if (useLaserPointer && laserPointerRenderer == null)
+            {
+                laserPointerRenderer = GetComponent<LineRenderer>();
+                if (!laserPointerRenderer)
+                {
+                    print("Requires a line renderer to use laser pointer");
+                    useLaserPointer = false;
+                }
+            }
         }
 
         // Update is called once per frame
@@ -36,6 +47,43 @@ namespace EVRTH.Scripts.Utility
         {
             transform.localPosition = InputTracking.GetLocalPosition(vrNode);
             transform.localRotation = InputTracking.GetLocalRotation(vrNode);
+            if (useLaserPointer)
+            {
+                laserPointerRenderer.SetPosition(0, transform.position);
+                RaycastHit hit;
+                if (Physics.Raycast(new Ray(transform.position, transform.forward), out hit))
+                {
+                    laserPointerRenderer.SetPosition(1,hit.point);
+                    IPointerHandlerVr ipvr = hit.collider.gameObject.GetComponent<IPointerHandlerVr>();
+                    if (ipvr != null)
+                    {
+                        if (isTouchingVrButton != null && isTouchingVrButton != ipvr)
+                        {
+                            isTouchingVrButton.PointerExit(transform.position);
+                            isTouchingVrButton = null;
+                        }
+                        isTouchingVrButton = ipvr;
+                        isTouchingVrButton.PointerEnter(transform.position);
+                    }
+                    else
+                    {
+                        if (isTouchingVrButton != null)
+                        {
+                            isTouchingVrButton.PointerExit(transform.position);
+                            isTouchingVrButton = null;
+                        }
+                    }
+                }
+                else
+                {
+                    if (isTouchingVrButton != null)
+                    {
+                        isTouchingVrButton.PointerExit(transform.position);
+                        isTouchingVrButton = null;
+                    }
+                    laserPointerRenderer.SetPosition(1, transform.position + transform.forward * 5f);
+                }
+            }
 
             if (Input.GetButtonDown("VRSubmit") && isTouchingVrButton != null)
             {
