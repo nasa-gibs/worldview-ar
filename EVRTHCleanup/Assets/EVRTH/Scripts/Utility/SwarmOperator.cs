@@ -26,7 +26,7 @@ namespace SwarmDownload.Scripts
             {
                 SwarmManager.Instance.StartCoroutine(ProcessRequestsCoroutine());
             }
-            Debug.Log("jobs" + jobs);
+            //Debug.Log("jobs" + jobs);
         }
 
         public void KillThread()
@@ -53,7 +53,7 @@ namespace SwarmDownload.Scripts
                     currRequest.callbackAction.Invoke(www);
                 }
                 jobs--;
-                Debug.Log("jobs" + jobs);
+                //Debug.Log("jobs" + jobs);
             }
         }
     }

@@ -124,18 +124,26 @@ namespace EVRTH.Scripts.Utility
                         Texture2D myTexture;
                         if (useDownloadHandlerGetContent)
                         {
-                            myTexture = DownloadHandlerTexture.GetContent(t);
-
-                            if (globeTileLayerSet.prepareTextureForRendering)
+                            if (t.isDone)
                             {
-                                myTexture.wrapMode = TextureWrapMode.Clamp;
+                                myTexture = DownloadHandlerTexture.GetContent(t);
+
+                                if (globeTileLayerSet.prepareTextureForRendering)
+                                {
+                                    myTexture.wrapMode = TextureWrapMode.Clamp;
+                                }
+                                print(myTexture.width + " " + myTexture.height);
                             }
-                            print(myTexture.width + " " + myTexture.height);
+                            else
+                            {
+                                print(t.downloadProgress);
+                                return;
+                            }
                         }
                         else
                         {
                             myTexture = new Texture2D(2, 2, TextureFormat.RGB24, true, linearTextures);
-                            myTexture.LoadImage(t.downloadHandler.data, false);
+                            myTexture.LoadImage(t.downloadHandler.data, false);                            
                             if (globeTileLayerSet.prepareTextureForRendering)
                             {
                                 myTexture.wrapMode = TextureWrapMode.Clamp;
@@ -143,7 +151,7 @@ namespace EVRTH.Scripts.Utility
                                 myTexture.anisoLevel = globalAnisoLevel;
                                 myTexture.Apply(true, true);
                             }
-                            //print(myTexture.width + " " + myTexture.height);
+                            //print("Data length " + t.downloadHandler.data.Length + " reported size " + myTexture.width + " " + myTexture.height);
                         }
 
                         globeTileLayerSet.texture = myTexture;

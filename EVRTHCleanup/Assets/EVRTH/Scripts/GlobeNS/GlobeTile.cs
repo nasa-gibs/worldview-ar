@@ -509,7 +509,7 @@ namespace EVRTH.Scripts.GlobeNS
         private void RequestTexture(Layer layer, DateTime date, TextureDownloadHandler handler, int layerNum)
         {
             url = layer.WmtsToUrl(coords, date);
-
+            //Debug.Log(url);
             // Load from cache if possible
             if (globe.tileTextureCache.ExistsInCache(url))
             {

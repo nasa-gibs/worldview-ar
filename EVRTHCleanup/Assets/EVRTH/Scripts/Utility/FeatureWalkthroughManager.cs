@@ -15,9 +15,9 @@ namespace EVRTH.Scripts.Utility
         public LayerApplier layerApplier;
         public Globe globe;
         public List<UnityEvent> actions;
-        public List<string> stepDescriptionsList;
         public int currAction;
         public float cooldown;
+        public Text headerText;
         public Text stepDescriptionDisplay;
         public Text dateLabelText;
         public bool nextStepTrigger;
@@ -59,7 +59,7 @@ namespace EVRTH.Scripts.Utility
             (actions[0] ?? (actions[0] = new UnityEvent())).AddListener(() =>
             {
                 UpdateGlobeLayer(0, "BlueMarble_NextGeneration");//"BlueMarble_ShadedRelief_Bathymetry");
-                stepDescriptionDisplay.text = stepDescriptionsList[0];
+                //stepDescriptionDisplay.text = stepDescriptionsList[0];
             });
 
             if (actions.Count == 1)
@@ -67,46 +67,31 @@ namespace EVRTH.Scripts.Utility
             (actions[1] ?? (actions[1] = new UnityEvent())).AddListener(() =>
             {
                 UpdateGlobeLayer(1, "MODIS_Fires_All");
-                stepDescriptionDisplay.text = stepDescriptionsList[1];
+                headerText.text = "Fires";
+                stepDescriptionDisplay.text = "Humans can have a dramatic impact on the Earth in a very short time.  We start fires every year to clear land.  You can see evidence of this in EVRTH.";
             });
 
             if (actions.Count == 2)
                 actions.Add(new UnityEvent());
             (actions[2] ?? (actions[2] = new UnityEvent())).AddListener(() =>
             {
+                headerText.text = "Carbon Monoxide";
                 UpdateGlobeLayer(0, "AIRS_CO_Total_Column_Day",true);
-                stepDescriptionDisplay.text = stepDescriptionsList[2];
+                stepDescriptionDisplay.text = "These fires pump smoke and CO into the atmosphere over time, affecting large parts of the planet. You can view these effects as a volumetric visualization in EVRTH.";
             });
 
             if (actions.Count == 3)
                 actions.Add(new UnityEvent());
             (actions[3] ?? (actions[3] = new UnityEvent())).AddListener(() =>
             {
+                headerText.text = "Perfect Storm";
+                //ClearVolumetricLayer();
+                UpdateGlobeLayer(1, "MODIS_Fires_All");
                 UpdateGlobeLayer(2, "AMSR2_Surface_Rain_Rate_Day");
-                stepDescriptionDisplay.text = stepDescriptionsList[3];
+                stepDescriptionDisplay.text =
+                    "In 2015, El Nino disrupted rain patterns in Asia. The fires weren’t put out as usual, making the CO spread far worse. You can understand this unfortunate combination by viewing multiple datasets in EVRTH.";
             });
 
-            if (actions.Count == 4)
-                actions.Add(new UnityEvent());
-            (actions[4] ?? (actions[4] = new UnityEvent())).AddListener(() =>
-            {
-                stepDescriptionDisplay.text = stepDescriptionsList[4];
-            });
-
-            if (actions.Count == 5)
-                actions.Add(new UnityEvent());
-            (actions[5] ?? (actions[5] = new UnityEvent())).AddListener(() =>
-            {
-                UpdateGlobeLayer(0, "AMSR2_Surface_Rain_Rate_Day", true);
-                stepDescriptionDisplay.text = stepDescriptionsList[5];
-            });
-
-            if (actions.Count == 6)
-                actions.Add(new UnityEvent());
-            (actions[6] ?? (actions[6] = new UnityEvent())).AddListener(() =>
-            {
-                stepDescriptionDisplay.text = stepDescriptionsList[6];
-            });
         }
 
         private void Update()
@@ -175,21 +160,29 @@ namespace EVRTH.Scripts.Utility
             animationController.StopAnimation();
         }
 
+        private void ClearVolumetricLayer()
+        {
+            layerApplier.scienceDataIngestor0.ClearDataState();
+            layerApplier.dataVisualizer0.Reset();
+        }
+
         private void UpdateGlobeLayer(int layerIndex,string layerName, bool isExtruded = false)
         {
             GlobeLayerInfo globeLayer = globe.layers[layerIndex];
-
+            var date = new DateTime(2015, 9, 16);
             if (globeLayer.name == null || layerName != globeLayer.name || isExtruded)
             {
                 if (isExtruded)
                 {
                     Debug.LogFormat("Setting extruded layer {0} to {1}", layerIndex, layerName);
-                    layerApplier.ApplyLayer(layerName, new DateTime(2016, 8, 16), LayerApplier.LayerVisualizationStyle.Volumetric, layerIndex);
+                        dateLabelText.text = string.Format("Current Date: {0:MM/dd/yyyy}", date);
+                    layerApplier.ApplyLayer(layerName, date, LayerApplier.LayerVisualizationStyle.Volumetric, layerIndex);
                 }
                 else
                 {
+                    dateLabelText.text = string.Format("Current Date: {0:MM/dd/yyyy}", date);
                     Debug.LogFormat("Setting flat layer {0} to {1}", layerIndex, layerName);
-                    layerApplier.ApplyLayer(layerName, new DateTime(2016, 8, 16), LayerApplier.LayerVisualizationStyle.Flat, layerIndex);
+                    layerApplier.ApplyLayer(layerName, date, LayerApplier.LayerVisualizationStyle.Flat, layerIndex);
                 }
             }
         }

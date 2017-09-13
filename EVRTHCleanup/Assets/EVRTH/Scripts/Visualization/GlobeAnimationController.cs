@@ -172,7 +172,7 @@ namespace EVRTH.Scripts.Visualization
             DateTime timeStep = animationSteps[currentStepIndex];
             for (int i = 0; i < layers.Count; i++)
             {
-                globe.LoadLayer(layers[i].wmsLayer.identifier, timeStep);
+                globe.LoadLayer(1,layers[i].wmsLayer.identifier, timeStep);
             }
             if (OnAnimationStep != null)
             {
