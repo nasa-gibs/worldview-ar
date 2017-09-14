@@ -98,7 +98,7 @@ namespace EVRTH.Scripts.Utility
             //rotate the globe with the touchpad
             globeTransform.Rotate(Vector3.up,globeRotSpeed * Input.GetAxis("Horizontal") * Time.deltaTime,Space.World);
 
-            if (Input.GetAxis("Grip") < 0.5f && isZoom)
+            if (!Input.GetButton("VRSubmit") && isZoom)
             {
                 isZoom = false;
             }
@@ -113,7 +113,7 @@ namespace EVRTH.Scripts.Utility
                 }
             }
 
-            if (Input.GetAxis("Grip") >= 0.5f && !isZoom)
+            if (Input.GetButton("VRSubmit") && !isZoom)
             {
                 isZoom = true;
                 oldDist = Vector3.Distance(transform.position, globeTransform.position);

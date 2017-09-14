@@ -31,6 +31,7 @@ namespace EVRTH.Scripts.Utility
         private bool isReady;
         private GlobeAnimationController animationController;
 
+
         private IEnumerator Start()
         {
             WaitForEndOfFrame wait = new WaitForEndOfFrame();
@@ -68,7 +69,7 @@ namespace EVRTH.Scripts.Utility
             {
                 UpdateGlobeLayer(1, "MODIS_Fires_All");
                 headerText.text = "Fires";
-                stepDescriptionDisplay.text = "Humans can have a dramatic impact on the Earth in a very short time.  We start fires every year to clear land.  You can see evidence of this in EVRTH.";
+                stepDescriptionDisplay.text = "Here are the fires started over just a few months in 2016 as recorded by the infrared sensor on a camera called MODIS.";
             });
 
             if (actions.Count == 2)
@@ -77,7 +78,7 @@ namespace EVRTH.Scripts.Utility
             {
                 headerText.text = "Carbon Monoxide";
                 UpdateGlobeLayer(0, "AIRS_CO_Total_Column_Day",true);
-                stepDescriptionDisplay.text = "These fires pump smoke and CO into the atmosphere over time, affecting large parts of the planet. You can view these effects as a volumetric visualization in EVRTH.";
+                stepDescriptionDisplay.text = "These fires release life threatening pollutants which can be seen by an atmospheric sounder called AIRS.";
             });
 
             if (actions.Count == 3)
@@ -89,7 +90,7 @@ namespace EVRTH.Scripts.Utility
                 UpdateGlobeLayer(1, "MODIS_Fires_All");
                 UpdateGlobeLayer(2, "AMSR2_Surface_Rain_Rate_Day");
                 stepDescriptionDisplay.text =
-                    "In 2015, El Nino disrupted rain patterns in Asia. The fires weren’t put out as usual, making the CO spread far worse. You can understand this unfortunate combination by viewing multiple datasets in EVRTH.";
+                    "In 2015, the El Nino phenomena pushed rains off shore and the fires burned out of control";
             });
 
         }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using EVRTH.Scripts.Geometry;
 using EVRTH.Scripts.WMS;
 using UnityEngine;
@@ -143,7 +144,8 @@ namespace EVRTH.Scripts.GlobeNS
         /// Get the texture coordinates for the globe point with a given normal.
         /// </summary>
         /// <returns>A 2D vector containing the texture coordinates corresponding to the given normal vector.</returns>
-        public static Vector2 GetUvFromNormal(LatLonBoundingBox geometryBBox, LatLonBoundingBox textureBBox, Ellipsoid ellipsoid, Vector3 normal)
+        public static Vector2 GetUvFromNormal(LatLonBoundingBox geometryBBox, LatLonBoundingBox textureBBox,
+            Ellipsoid ellipsoid, Vector3 normal)
         {
             // Compute texture coordinates on a full globe texture
             Vector2 tex = ComputeGlobalTextureCoordinate(normal);
@@ -189,6 +191,15 @@ namespace EVRTH.Scripts.GlobeNS
             {
                 u = u * geometryBBox.DeltaLon / textureBBox.DeltaLon;
                 v = v * geometryBBox.DeltaLat / textureBBox.DeltaLat;
+                //using (var at = File.AppendText("UVDebugLog.txt"))
+                //{
+                //    var s = string.Format(" , {0}, {1}, {2}, , {3}, {4}, {5}, {6}, , {7}, {8}, {9}, {10}", normal, u, v,
+                //        geometryBBox.maxLat, geometryBBox.maxLon, geometryBBox.minLat, geometryBBox.minLon,
+                //        textureBBox.maxLat, textureBBox.maxLon, textureBBox.minLat, textureBBox.minLon);
+                //    s = s.Replace('(', ' ').Replace(')',' ');
+
+                //    at.WriteLine(s);
+                //}
             }
 
             return new Vector2(u, v);
