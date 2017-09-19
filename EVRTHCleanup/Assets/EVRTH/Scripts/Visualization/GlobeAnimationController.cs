@@ -39,7 +39,7 @@ namespace EVRTH.Scripts.Visualization
         private int lastReadyStep;
         private int[] requestsCompletePerStep;
 
-        private const int precacheSteps = 5; // Somewhat arbitrary. Could be computed based on download speed and animation speed.
+        private const int precacheSteps = 10; // Somewhat arbitrary. Could be computed based on download speed and animation speed.
 
         public float PercentReady
         {

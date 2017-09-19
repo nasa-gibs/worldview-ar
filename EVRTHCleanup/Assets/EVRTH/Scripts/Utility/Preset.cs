@@ -1,19 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 namespace EVRTH.Scripts.Utility
 {
     [Serializable]
     public class Preset
     {
-        internal string presetName;
-        internal List<string> layersInPreset;
-        internal List<string> volumetricLayers;
+        [SerializeField]
+        public string presetName;
+        [SerializeField]
+        public List<string> layersInPreset;
+        [SerializeField]
+        public List<string> volumetricLayers;
 
         public Preset()
         {
             layersInPreset = new List<string> {"BlueMarble_ShadedRelief"};
-            volumetricLayers = new List<string>(2);
+            volumetricLayers = new List<string>(2) {"",""};
         }
 
         public bool AddOverlayLayer(string newLayer)
@@ -39,6 +44,11 @@ namespace EVRTH.Scripts.Utility
         public void SetBaseLayer(string newLayer)
         {
             layersInPreset[0] = newLayer;
+        }
+
+        public void RemoveLayer(int index)
+        {
+            layersInPreset.RemoveAt(index);
         }
 
     }
