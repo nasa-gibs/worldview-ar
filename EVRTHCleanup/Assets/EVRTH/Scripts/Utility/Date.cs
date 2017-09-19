@@ -20,5 +20,12 @@ namespace EVRTH.Scripts.Utility
                 return new DateTime(year, month, day);
             }
         }
+
+        public void SetFromDateTime(DateTime newDate)
+        {
+            day = newDate.Day;
+            month = newDate.Month;
+            year = newDate.Year;
+        }
     }
 }

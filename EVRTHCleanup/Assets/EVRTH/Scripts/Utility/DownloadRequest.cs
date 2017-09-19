@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine.Networking;
 
-namespace SwarmDownload.Scripts
+namespace EVRTH.Scripts.Utility
 {
     public struct DownloadRequest
     {

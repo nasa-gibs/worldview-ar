@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace SwarmDownload.Scripts
+namespace EVRTH.Scripts.Utility
 {
     [Serializable]
     internal class SwarmOperator

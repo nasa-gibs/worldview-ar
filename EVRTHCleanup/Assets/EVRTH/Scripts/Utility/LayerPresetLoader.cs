@@ -1,7 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using EVRTH.Editor;
-using EVRTH.Scripts.GIBS;
 using EVRTH.Scripts.GlobeNS;
 using EVRTH.Scripts.Visualization;
 using UnityEngine;
@@ -10,7 +8,6 @@ namespace EVRTH.Scripts.Utility
 {
     public class LayerPresetLoader : MonoBehaviour
     {
-        public InspectorCommentBlock instructions;
         public Globe globe;
         private LayerApplier layerApplier;
         public Date date;
@@ -26,9 +23,9 @@ namespace EVRTH.Scripts.Utility
         //private List<string> layerList;
 
 
-        private IEnumerable Start()
+        private IEnumerator Start()
         {
-            var w = new WaitForEndOfFrame();
+            WaitForEndOfFrame w = new WaitForEndOfFrame();
             while (!globe.parsedAvailableLayers)
             {
                 yield return w;

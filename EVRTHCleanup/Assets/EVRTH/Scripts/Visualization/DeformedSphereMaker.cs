@@ -216,7 +216,7 @@ namespace EVRTH.Scripts.Visualization
                         // Average with other values
                         float currentVertexHeight = vertices[vertexIndex].magnitude;
                         float averageVertexHeight =
-                            (currentVertexHeight * (float) contributionsAlreadyMadeToThisVertex + vertexHeight) /
+                            (currentVertexHeight * contributionsAlreadyMadeToThisVertex + vertexHeight) /
                             ((float) contributionsAlreadyMadeToThisVertex + 1);
                         vertices[vertexIndex] = vertices[vertexIndex].normalized * averageVertexHeight;
                     }

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using EVRTH.Scripts.Geometry;
 using EVRTH.Scripts.WMS;
 using UnityEngine;
@@ -191,43 +190,10 @@ namespace EVRTH.Scripts.GlobeNS
             {
                 u = u * geometryBBox.DeltaLon / textureBBox.DeltaLon;
                 v = v * geometryBBox.DeltaLat / textureBBox.DeltaLat;
-                //using (var at = File.AppendText("UVDebugLog.txt"))
-                //{
-                //    var s = string.Format(" , {0}, {1}, {2}, , {3}, {4}, {5}, {6}, , {7}, {8}, {9}, {10}", normal, u, v,
-                //        geometryBBox.maxLat, geometryBBox.maxLon, geometryBBox.minLat, geometryBBox.minLon,
-                //        textureBBox.maxLat, textureBBox.maxLon, textureBBox.minLat, textureBBox.minLon);
-                //    s = s.Replace('(', ' ').Replace(')',' ');
-
-                //    at.WriteLine(s);
-                //}
             }
 
             return new Vector2(u, v);
         }
-
-        /// <summary>
-        /// Gets the four corners of a bounding box sector of the given ellipsoid region.  Upper left refers to Northerly and westerly latlon coordinates.
-        /// </summary>
-        //public void GetSectorBounds(LatLonBoundingBox bbox, Ellipsoid ellipsoid, ref Vector3 upperLeft, ref Vector3 lowerLeft, ref Vector3 upperRight, ref Vector3 lowerRight)
-        //{
-        //    float lat =  Mathf.Clamp(bbox.maxLat, -90 + eps, 90 - eps);
-        //    float phi = (lat + 90f) * Mathf.Deg2Rad;
-        //    float sinPhi = Mathf.Sin(phi);
-        //    float theta = bbox.minLon * Mathf.Deg2Rad;
-        //    upperLeft = new Vector3(Mathf.Cos(theta) * ellipsoid.Radii.x * sinPhi, Mathf.Sin(theta) * ellipsoid.Radii.y * sinPhi, ellipsoid.Radii.z * Mathf.Cos(phi));
-
-        //    theta = bbox.maxLon * Mathf.Deg2Rad;
-        //    upperRight = new Vector3(Mathf.Cos(theta) * ellipsoid.Radii.x * sinPhi, Mathf.Sin(theta) * ellipsoid.Radii.y * sinPhi, ellipsoid.Radii.z * Mathf.Cos(phi));
-
-        //    lat =  Mathf.Clamp(bbox.minLat, -90 + eps, 90 - eps);
-        //    phi = (lat + 90f) * Mathf.Deg2Rad;
-        //    sinPhi = Mathf.Sin(phi);
-        //    theta = bbox.minLon * Mathf.Deg2Rad;
-        //    lowerLeft = new Vector3(Mathf.Cos(theta) * ellipsoid.Radii.x * sinPhi, Mathf.Sin(theta) * ellipsoid.Radii.y * sinPhi, ellipsoid.Radii.z * Mathf.Cos(phi));
-
-        //    theta = bbox.maxLon * Mathf.Deg2Rad;
-        //    lowerRight = new Vector3(Mathf.Cos(theta) * ellipsoid.Radii.x * sinPhi, Mathf.Sin(theta) * ellipsoid.Radii.y * sinPhi, ellipsoid.Radii.z * Mathf.Cos(phi));
-        //}
 
         /// <summary>
         /// Generate geometry for an ellipsoid globe.
@@ -378,11 +344,6 @@ namespace EVRTH.Scripts.GlobeNS
             // Go from the first latitude stack to the last one covered by this fraction
             for (int latitudeStackIndex = Mathf.CeilToInt(latitudeStartFraction * (numberOfStackPartitions - 2.0f)); latitudeStackIndex <= Mathf.FloorToInt(latitudeEndFraction * (numberOfStackPartitions - 1.0f)); latitudeStackIndex++)
             {
-                //if (latitudeEndFraction == 1.0f)
-                //{
-                //    Debug.Log("Processing lat stack index " + latitudeStackIndex);
-                //}
-
                 // Go from the first longitude slice to the last one covered by this fraction
                 for (int longitudeSliceIndex = Mathf.CeilToInt(longitudeStartFraction * numberOfSlicePartitions); longitudeSliceIndex <= Mathf.FloorToInt(longitudeEndFraction * numberOfStackPartitions); longitudeSliceIndex++)
                 {

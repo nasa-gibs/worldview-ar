@@ -1,5 +1,4 @@
-﻿using System;
-using EVRTH.Scripts.Utility;
+﻿using EVRTH.Scripts.Utility;
 using UnityEditor;
 using UnityEngine;
 

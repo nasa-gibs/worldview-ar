@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EVRTH.Editor
+namespace EVRTH.Scripts.DemoHelpers
 {
     [Serializable]
     public class InspectorCommentBlock

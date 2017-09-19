@@ -161,12 +161,6 @@ namespace EVRTH.Scripts.Utility
             animationController.StopAnimation();
         }
 
-        private void ClearVolumetricLayer()
-        {
-            layerApplier.scienceDataIngestor0.ClearDataState();
-            layerApplier.dataVisualizer0.Reset();
-        }
-
         private void UpdateGlobeLayer(int layerIndex,string layerName, bool isExtruded = false)
         {
             GlobeLayerInfo globeLayer = globe.layers[layerIndex];

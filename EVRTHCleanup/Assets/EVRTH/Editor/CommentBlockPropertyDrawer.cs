@@ -1,9 +1,8 @@
-﻿using Assets.Editor;
-using EVRTH.Editor;
+﻿using EVRTH.Scripts.DemoHelpers;
 using UnityEditor;
 using UnityEngine;
 
-namespace Assets.EVRTH.Editor
+namespace EVRTH.Editor
 {
     [CustomPropertyDrawer(typeof(InspectorCommentBlock))]
     public class CommentBlockPropertyDrawer : PropertyDrawer

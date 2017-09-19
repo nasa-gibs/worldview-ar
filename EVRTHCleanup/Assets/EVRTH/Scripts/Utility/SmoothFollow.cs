@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets.EVRTH.Scripts.Utility
+namespace EVRTH.Scripts.Utility
 {
     public class SmoothFollow : MonoBehaviour
     {

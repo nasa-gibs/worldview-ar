@@ -1957,7 +1957,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 820fd02f26d218b4cb85ae1c9a77df8b, type: 3}
     m_FontSize: 25
     m_FontStyle: 0
     m_BestFit: 1
@@ -2009,10 +2009,9 @@ MonoBehaviour:
     month: 8
     year: 2017
   endDate:
-    day: 16
+    day: 17
     month: 9
     year: 2017
-  steps: 26
   autoPlay: 1
   presetLoader: {fileID: 605299038}
   globe: {fileID: 1473393863}
@@ -2030,12 +2029,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f630fe887f77a7419f769ce3060eeca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  instructions:
-    comment: 'When using animations a full preset can be animated. this will
-
-      take up a significant amount of bandwidth per layer though
-
-      so be cautious.'
   globe: {fileID: 0}
   date:
     day: 26
@@ -3544,7 +3537,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.62352943, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -5014,11 +5007,11 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1473393869}
+  - component: {fileID: 1473393866}
   - component: {fileID: 1473393868}
   - component: {fileID: 1473393867}
   - component: {fileID: 1473393865}
   - component: {fileID: 1473393863}
-  - component: {fileID: 1473393866}
   - component: {fileID: 1473393864}
   - component: {fileID: 1473393870}
   m_Layer: 8
@@ -5071,8 +5064,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1afecfb591ef4a748a4c3d9cf1eda26e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  commentBlock:
-    comment: 
   globe: {fileID: 1473393863}
   scienceDataIngestor0: {fileID: 455791969}
   scienceDataIngestor1: {fileID: 1724254677}
@@ -5101,11 +5092,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1473393862}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e43bca915143489e9791f006c98fafa, type: 3}
+  m_Script: {fileID: 11500000, guid: 7bcea54d66608574f882cea20e6f1313, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flatLayerDropdown: {fileID: 1517631946}
-  extrudedlayerDropdown: {fileID: 1795239359}
+  comment:
+    comment: 
 --- !u!114 &1473393867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5413,7 +5404,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1473393866}
+      - m_Target: {fileID: 0}
         m_MethodName: OnFlatLayerDropdownChange
         m_Mode: 1
         m_Arguments:
@@ -6666,7 +6657,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1473393866}
+      - m_Target: {fileID: 0}
         m_MethodName: OnExtrudedLayerDropdownChange
         m_Mode: 1
         m_Arguments:

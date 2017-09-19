@@ -17,6 +17,11 @@ namespace EVRTH.Scripts.Visualization
         {
             public Layer wmsLayer;
             public List<List<string>> urls;
+
+            public override string ToString()
+            {
+                return wmsLayer.identifier;
+            }
         }
 
         public event Action<DateTime, float> OnAnimationStep;
@@ -38,8 +43,9 @@ namespace EVRTH.Scripts.Visualization
 
         private int lastReadyStep;
         private int[] requestsCompletePerStep;
+        internal List<string> layersOrder;
 
-        private const int precacheSteps = 10; // Somewhat arbitrary. Could be computed based on download speed and animation speed.
+        private const int precacheSteps = 20; // Somewhat arbitrary. Could be computed based on download speed and animation speed.
 
         public float PercentReady
         {
@@ -172,7 +178,9 @@ namespace EVRTH.Scripts.Visualization
             DateTime timeStep = animationSteps[currentStepIndex];
             for (int i = 0; i < layers.Count; i++)
             {
-                globe.LoadLayer(1,layers[i].wmsLayer.identifier, timeStep);
+                globe.LoadLayer(layersOrder != null && layersOrder.Contains(layers[i].ToString())
+                    ? layersOrder.IndexOf(layers[i].ToString())
+                    : 1, layers[i].wmsLayer.identifier, timeStep);
             }
             if (OnAnimationStep != null)
             {
@@ -223,6 +231,7 @@ namespace EVRTH.Scripts.Visualization
             for (int i = 0; i < layers.Count; i++)
             {
                 AnimationLayer layer = layers[i];
+                Debug.Assert(step < layer.urls.Count,step + " " + layer.urls.Count);
                 List<string> requestsForThisDate = layer.urls[step];
 
                 for (int j = 0; j < requestsForThisDate.Count; j++)

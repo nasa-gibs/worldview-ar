@@ -1,9 +1,9 @@
 ﻿// Put in Editor folder
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEditor;
 
-namespace UIHelper
+using UnityEditor;
+using UnityEngine;
+
+namespace EVRTH.Editor
 {
     public class UIHelp : MonoBehaviour
     {
@@ -20,7 +20,7 @@ namespace UIHelper
                 {
                     RectTransform pt = Selection.activeTransform.parent as RectTransform;
 
-                    if (t == null || pt == null) return;
+                    if (pt == null) return;
 
                     Vector2 newAnchorsMin = new Vector2(t.anchorMin.x + t.offsetMin.x / pt.rect.width,
                                                         t.anchorMin.y + t.offsetMin.y / pt.rect.height);

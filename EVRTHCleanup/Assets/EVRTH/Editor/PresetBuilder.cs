@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using Assets.Editor;
 using EVRTH.Scripts.GIBS;
 using EVRTH.Scripts.Utility;
 using UnityEditor;

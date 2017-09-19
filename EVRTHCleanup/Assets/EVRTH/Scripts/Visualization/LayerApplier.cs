@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using EVRTH.Editor;
 using EVRTH.Scripts.GlobeNS;
 using EVRTH.Scripts.Utility;
 using UnityEngine;
@@ -11,7 +10,6 @@ namespace EVRTH.Scripts.Visualization
 {
     public class LayerApplier : MonoBehaviour
     {
-        public InspectorCommentBlock commentBlock;
         public AbstractGlobe globe;
         public ScienceDataIngestor scienceDataIngestor0;
         public ScienceDataIngestor scienceDataIngestor1;

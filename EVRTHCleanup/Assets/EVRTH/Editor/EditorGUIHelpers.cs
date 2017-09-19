@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine;
 using EGL = UnityEditor.EditorGUILayout;
 
-namespace Assets.Editor
+namespace EVRTH.Editor
 {
     public class HorizontalGroup : IDisposable
     {

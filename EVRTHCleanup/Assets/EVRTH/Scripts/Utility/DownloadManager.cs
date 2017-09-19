@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using EVRTH.Scripts.GlobeNS;
 using EVRTH.Scripts.Visualization;
-using SwarmDownload.Scripts;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -15,7 +13,6 @@ namespace EVRTH.Scripts.Utility
         public int tileTextureLoadsPerFrame = 2;
 
         public readonly int numQueues = Globe.MaxLayers + 1; // One queue for each layer plus a default layer
-        private int nextQueue;
         private readonly List<Queue<DownloadTask>> downloadQueues = new List<Queue<DownloadTask>>();
 
         private readonly Queue<DownloadTask> globeTileTexturesToLoadQueue = new Queue<DownloadTask>();
@@ -256,67 +253,6 @@ namespace EVRTH.Scripts.Utility
             {
                 task.handler(task.layerName, task.date, task.texture);
             }
-        }
-
-        private IEnumerator DownloadTexture(DownloadTask downloadTask)
-        {
-            ongoingTextureLoadCount++;
-            ongoingDownloadCount++;
-
-            yield return RequestWebTexture (downloadTask);
-
-            ongoingDownloadCount--;
-        }
-
-        private IEnumerator RequestWebTexture( DownloadTask downloadTask)
-        {
-            UnityWebRequest www = UnityWebRequestTexture.GetTexture (downloadTask.url);
-            yield return www.Send();
-
-            if (!www.isNetworkError)
-            {
-                Texture2D myTexture;
-                if (useDownloadHandlerGetContent)
-                {
-                    myTexture = DownloadHandlerTexture.GetContent(www);
-
-                    if (downloadTask.prepareTextureForRendering)
-                    {
-                        myTexture.wrapMode = TextureWrapMode.Clamp;
-                    }
-                    print(myTexture.width + " " + myTexture.height);
-                }
-                else
-                {
-                    myTexture = new Texture2D(2, 2, TextureFormat.RGB24, true, linearTextures);
-                    myTexture.LoadImage(www.downloadHandler.data, false);
-
-                    if (downloadTask.prepareTextureForRendering)
-                    {
-                        myTexture.wrapMode = TextureWrapMode.Clamp;
-                        myTexture.mipMapBias = globalMipMapBias;
-                        myTexture.anisoLevel = globalAnisoLevel;
-                        myTexture.Apply(true, true);
-                    }
-                    print(myTexture.width + " " + myTexture.height);
-                }
-
-                downloadTask.texture = myTexture;
-                globeTileTexturesToLoadQueue.Enqueue(downloadTask);
-            }
-            else
-            {
-                // TODO actually handle error and retry
-                Debug.Log("FAILURE!");
-                Debug.Log("Error occurred when trying to download file " + downloadTask.url);
-                Debug.Log("to location " + downloadTask.localFilePath);
-                Debug.Log("Error: " + www.error);
-                Debug.Log("Response code: " + www.responseCode);
-                Debug.Log("URL: " + www.url);
-                downloadRequests[downloadTask.url] = DownloadStatus.Error;
-            }
-
-            www.Dispose ();
         }
     }
 }

@@ -11,15 +11,13 @@ namespace EVRTH.Scripts.Utility
 {
     public class AnimationRangeSelector : MonoBehaviour
     {
-        [Header("Start Date")]
+        [Header("Start Date (included)")]
         public Date startDate;
         [Space]
-        [Header("End Date")]
+        [Header("End Date (excluded)")]
         public Date endDate;
         [Space]
         [Space]
-        public int steps;
-
         public bool autoPlay;
         public LayerPresetLoader presetLoader;
         public Globe globe;
@@ -28,7 +26,7 @@ namespace EVRTH.Scripts.Utility
         public Text dateLabel;
 
         private GlobeAnimationController animationController;
-
+        private int steps;
 
         private void Start()
         {
@@ -38,6 +36,8 @@ namespace EVRTH.Scripts.Utility
             Debug.Assert(bufferBar != null, "Buffer rect object is not set");
 
             animationController = globe.GetComponent<GlobeAnimationController>();
+            steps = (int)(endDate.ToDateTime - startDate.ToDateTime).TotalDays;
+            print(steps);
             if (autoPlay)
             {
                 Invoke("PrepareAnimation",1f);
@@ -52,9 +52,11 @@ namespace EVRTH.Scripts.Utility
 
         public void PrepareAnimation()
         {
-            animationController.PrepareAnimation(startDate.ToDateTime, endDate.ToDateTime, steps,
-                globe.availableLayers.Where(kv => presetLoader.presets[presetLoader.currentPreset].layersInPreset
-                    .Contains(kv.Key)).Select(k => k.Value).ToList());
+            List<Layer> toAnimate = globe.availableLayers.Where(kv => presetLoader.presets[presetLoader.currentPreset]
+                .layersInPreset
+                .Contains(kv.Key)).Select(k => k.Value).ToList();
+            animationController.layersOrder = presetLoader.presets[presetLoader.currentPreset].layersInPreset;
+            animationController.PrepareAnimation(startDate.ToDateTime, endDate.ToDateTime, steps, toAnimate);
             animationController.OnAnimationStep += OnAnimationStep;
         }
 

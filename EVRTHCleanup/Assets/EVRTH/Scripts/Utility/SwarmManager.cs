@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using UnityEngine;
 
-namespace SwarmDownload.Scripts
+namespace EVRTH.Scripts.Utility
 {
     /// <summary>
     /// sets up a swarm of download operations and maintains them until all downloads are complete
