@@ -58,6 +58,7 @@ namespace EVRTH.Scripts.Utility
             animationController.layersOrder = presetLoader.presets[presetLoader.currentPreset].layersInPreset;
             animationController.PrepareAnimation(startDate.ToDateTime, endDate.ToDateTime, steps, toAnimate);
             animationController.OnAnimationStep += OnAnimationStep;
+            animationController.setPrecache((int)(steps * 0.66f));
         }
 
         private void OnAnimationStep(DateTime date, float animProgress)

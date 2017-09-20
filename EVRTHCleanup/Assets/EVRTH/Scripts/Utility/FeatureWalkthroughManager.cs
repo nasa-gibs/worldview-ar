@@ -59,8 +59,7 @@ namespace EVRTH.Scripts.Utility
                 actions.Add(new UnityEvent());
             (actions[0] ?? (actions[0] = new UnityEvent())).AddListener(() =>
             {
-                UpdateGlobeLayer(0, "BlueMarble_NextGeneration");//"BlueMarble_ShadedRelief_Bathymetry");
-                //stepDescriptionDisplay.text = stepDescriptionsList[0];
+                UpdateGlobeLayer(0, "BlueMarble_NextGeneration");
             });
 
             if (actions.Count == 1)
@@ -78,7 +77,7 @@ namespace EVRTH.Scripts.Utility
             {
                 headerText.text = "Carbon Monoxide";
                 UpdateGlobeLayer(0, "AIRS_CO_Total_Column_Day",true);
-                stepDescriptionDisplay.text = "These fires release life threatening pollutants which can be seen by an atmospheric sounder called AIRS.";
+                stepDescriptionDisplay.text = "These fires release life-threatening pollutants which can be seen by an atmospheric sounder called AIRS.";
             });
 
             if (actions.Count == 3)
@@ -90,7 +89,7 @@ namespace EVRTH.Scripts.Utility
                 UpdateGlobeLayer(1, "MODIS_Fires_All");
                 UpdateGlobeLayer(2, "AMSR2_Surface_Rain_Rate_Day");
                 stepDescriptionDisplay.text =
-                    "In 2015, the El Nino phenomena pushed rains off shore and the fires burned out of control";
+                    "In 2015, the El Niño phenomenon pushed rains offshore and the fires burned out of control";
             });
 
         }

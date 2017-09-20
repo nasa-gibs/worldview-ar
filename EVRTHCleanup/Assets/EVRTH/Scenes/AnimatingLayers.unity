@@ -566,16 +566,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   comment:
-    comment: 'The animation range selector is a wrapper on top of the Globe animation
-      controller
-
-      built for ease of use. It ties into the layer preset loader and lets you setup
-      animations
-
-      between a set of dates with a specific set of layers. It will animate all of
-      the presets
-
-      flat layers, but could be modified to animate volumetric layers'
+    comment: "The animation range selector is a wrapper on top of the Globe animation
+      controller\nbuilt for ease of use. It ties into the layer preset loader and
+      lets you setup animations\nbetween a set of dates with a specific set of layers.
+      It will animate all of the presets\nflat layers, but could be modified to animate
+      volumetric layers. It is important to note \nanimating a large number of layers
+      will consume a significant amount of bandwidth and\nmemory."
 --- !u!1 &802598914
 GameObject:
   m_ObjectHideFlags: 0
@@ -1505,3 +1501,45 @@ MonoBehaviour:
   daysToUse: 1
   colorMissingFromDictCount: 0
   zeroColorValuesFound: 0
+--- !u!1001 &1808801328
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4858991837072978, guid: de20898cbc67a534093427ac7b87f996, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4858991837072978, guid: de20898cbc67a534093427ac7b87f996, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4858991837072978, guid: de20898cbc67a534093427ac7b87f996, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4858991837072978, guid: de20898cbc67a534093427ac7b87f996, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4858991837072978, guid: de20898cbc67a534093427ac7b87f996, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4858991837072978, guid: de20898cbc67a534093427ac7b87f996, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4858991837072978, guid: de20898cbc67a534093427ac7b87f996, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4858991837072978, guid: de20898cbc67a534093427ac7b87f996, type: 2}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: de20898cbc67a534093427ac7b87f996, type: 2}
+  m_IsPrefabParent: 0

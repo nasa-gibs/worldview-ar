@@ -1242,12 +1242,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileTextureLoadsPerFrame: 2
-  useDownloadHandlerGetContent: 0
   globalMipMapBias: 0
   globalAnisoLevel: 0
   initialized: 0
   linearTextures: 1
-  cacheTextures: 0
 --- !u!4 &1473393869
 Transform:
   m_ObjectHideFlags: 0
@@ -1530,6 +1528,48 @@ MonoBehaviour:
   daysToUse: 1
   colorMissingFromDictCount: 0
   zeroColorValuesFound: 0
+--- !u!1001 &1784034720
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4858991837072978, guid: de20898cbc67a534093427ac7b87f996, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4858991837072978, guid: de20898cbc67a534093427ac7b87f996, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4858991837072978, guid: de20898cbc67a534093427ac7b87f996, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4858991837072978, guid: de20898cbc67a534093427ac7b87f996, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4858991837072978, guid: de20898cbc67a534093427ac7b87f996, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4858991837072978, guid: de20898cbc67a534093427ac7b87f996, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4858991837072978, guid: de20898cbc67a534093427ac7b87f996, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4858991837072978, guid: de20898cbc67a534093427ac7b87f996, type: 2}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: de20898cbc67a534093427ac7b87f996, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &1864616799
 GameObject:
   m_ObjectHideFlags: 0

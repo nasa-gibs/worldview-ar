@@ -45,7 +45,7 @@ namespace EVRTH.Scripts.Visualization
         private int[] requestsCompletePerStep;
         internal List<string> layersOrder;
 
-        private const int precacheSteps = 20; // Somewhat arbitrary. Could be computed based on download speed and animation speed.
+        private int precacheSteps = 20; // Somewhat arbitrary. Could be computed based on download speed and animation speed.
 
         public float PercentReady
         {
@@ -59,6 +59,11 @@ namespace EVRTH.Scripts.Visualization
                 int numRootTiles = globe.rootTiles.Length;
                 return numRootTiles * layers.Count;
             }
+        }
+
+        internal void setPrecache(int steps)
+        {
+            precacheSteps = steps;
         }
 
 
