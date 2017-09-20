@@ -13,15 +13,11 @@ namespace EVRTH.Scripts.Utility
         public Date date;
         [Space]
         [Space]
-        public int autoApply;
 
         [HideInInspector]
         public List<Preset> presets = new List<Preset>();
         [HideInInspector]
         public int currentPreset;
-
-        //private List<string> layerList;
-
 
         private IEnumerator Start()
         {
@@ -31,19 +27,17 @@ namespace EVRTH.Scripts.Utility
                 yield return w;
             }
             layerApplier = globe.GetComponent<LayerApplier>();
-            ApplyPreset(autoApply);
-            //LayerLoader.Init();
-            //layerList = new List<string>(LayerLoader.GetLayers().Keys);
         }
 
         public void ApplyPreset(int toApply)
         {
+            print("Applying preset " + toApply);
             if (presets.Count > toApply && toApply >= 0)
             {
                 currentPreset = toApply;
                 layerApplier.dataVisualizer0.Reset();
                 layerApplier.dataVisualizer1.Reset();
-                var set = presets[toApply];
+                Preset set = presets[toApply];
                 for (int i = 0; i < set.layersInPreset.Count; i++)
                 {
                     layerApplier.ApplyLayer(set.layersInPreset[i],date.ToDateTime,LayerApplier.LayerVisualizationStyle.Flat,i);

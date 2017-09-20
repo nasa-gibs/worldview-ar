@@ -7,7 +7,7 @@ namespace EVRTH.Editor
     [CustomPropertyDrawer(typeof(InspectorCommentBlock))]
     public class CommentBlockPropertyDrawer : PropertyDrawer
     {
-        private const float height = 100;
+        private const float height = 150;
         private float indent = 30;
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
@@ -25,7 +25,7 @@ namespace EVRTH.Editor
                 float labelHeight = base.GetPropertyHeight(property, label);
                 Rect region = new Rect(position.x + indent,position.y + labelHeight,position.width - indent - 10, position.height - indent - 10);
                 EditorGUI.BeginChangeCheck();
-                string newValue = EditorGUI.TextArea(region, valProperty.stringValue);
+                string newValue= EditorGUI.TextArea(region, valProperty.stringValue);
                 if (EditorGUI.EndChangeCheck())
                 {
                     valProperty.stringValue = newValue;

@@ -164,7 +164,7 @@ namespace EVRTH.Scripts.GlobeNS
             bool visible = storedVisibility;
 
             if (globe.Status == LayerStatus.Complete ||
-                globe.wireFrameMode ||
+                //globe.wireFrameMode ||
                 IsTopLevelTile() ||
                 wasPreviouslyCulled)
             {
@@ -403,8 +403,8 @@ namespace EVRTH.Scripts.GlobeNS
                 return;
             }
 
-            if (!globe.wireFrameMode)
-            {
+            //if (!globe.wireFrameMode)
+            //{
                 string textureParam = shaderTextureNames[layerIndex];
 
                 Debug.Assert(GetComponent<Renderer>().material.HasProperty(textureParam), "Shader does not support property " + textureParam);
@@ -420,18 +420,18 @@ namespace EVRTH.Scripts.GlobeNS
                 }
                 float value = IsTopLevelTile() ? 0f : 1f;
                 PrepareForLayerTransition(layerIndex, myTexture, currentTexture,  currentTextureOffset, currentTextureScale, value);
-            }
-            else
-            {
-                GetComponent<Renderer>().material = wireFrameMaterial;
-            }
+            //}
+            //else
+            //{
+            //    GetComponent<Renderer>().material = wireFrameMaterial;
+            //}
             layers[layerIndex].status = LoadStatus.Complete;
         }
 	
         public void ClearTexture(int layerIndex)
         {
-            if (!globe.wireFrameMode)
-            {
+            //if (!globe.wireFrameMode)
+            //{
                 string textureParam = shaderTextureNames[layerIndex];
 
                 Debug.Assert(GetComponent<Renderer>().material.HasProperty(textureParam), "Shader does not support property " + textureParam);
@@ -447,11 +447,11 @@ namespace EVRTH.Scripts.GlobeNS
                 }
                 float value = IsTopLevelTile() ? 0f : 1f;
                 PrepareForLayerTransition(layerIndex, null, currentTexture,  currentTextureOffset, currentTextureScale, value);
-            }
-            else
-            {
-                GetComponent<Renderer>().material = wireFrameMaterial;
-            }
+            //}
+            //else
+            //{
+            //    GetComponent<Renderer>().material = wireFrameMaterial;
+            //}
             layers[layerIndex].status = LoadStatus.Complete;
         }
 

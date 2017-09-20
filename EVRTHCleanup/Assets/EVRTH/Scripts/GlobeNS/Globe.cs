@@ -84,7 +84,6 @@ namespace EVRTH.Scripts.GlobeNS
         //Status properties
         [HideInInspector]
         public bool cachedShowGrid;
-        public bool wireFrameMode;
         public float crossFadeDuration = 0.5f;
         [HideInInspector]
         public int parentTilesPerFrameForWhichToUpdateVisibility;
@@ -153,12 +152,6 @@ namespace EVRTH.Scripts.GlobeNS
             {
                 // Reset layer
                 layers[i] = new GlobeLayerInfo();
-
-                // Clear download queue
-                if (downloader != null)
-                {
-                    downloader.Clear(i + 1);
-                }
             }
 
             LoadLayer(initialLayer, initialDateTime);
@@ -208,33 +201,8 @@ namespace EVRTH.Scripts.GlobeNS
 
         private void Update()
         {
-            // Check if wireframe state has changed
-            if (cachedShowGrid != wireFrameMode)
-            {
-                // If material changed from wireframe to map, make sure we cross-fade back
-                // If we changed from a map to wireframe, we'll skip the cross-fade;
-                // consider it to have already occurred
-                for (int i = 0; i < MaxLayers; i++)
-                {
-                    layers[i].status = LayerStatus.Loading;
-                }
-
-                GlobeTile[] tiles = GetComponentsInChildren<GlobeTile>();
-                for (int i = 0; i < tiles.Length; i++)
-                {
-                    tiles[i].GetComponent<Renderer>().material = wireFrameMode ? tiles[i].wireFrameMaterial : tiles[i].mapMaterial;
-
-                    // If material changed from wireframe to map, make sure we reload our textures
-                    if (cachedShowGrid)
-                    {
-                        tiles[i].manualRefreshRequested = true;
-                    }
-                }
-                cachedShowGrid = wireFrameMode;
-            }
             UpdateLayerLoading();
 
-            //Debug.Log("Refreshes this frame: " + refreshesThisFrame);
             refreshesThisFrame = 0;
         }
 
@@ -351,7 +319,6 @@ namespace EVRTH.Scripts.GlobeNS
         {
             int width = CurrentLayer.tileMatrixSet[MinZoom].matrixWidth;
             int height = CurrentLayer.tileMatrixSet[MinZoom].matrixHeight;
-            //
             rootTiles = new GlobeTile[width * height];
 
             for (int row = 0; row < height; row++)
@@ -383,11 +350,6 @@ namespace EVRTH.Scripts.GlobeNS
             globeLayer.transitionProgress = 0f;
             globeLayer.elapsedTransitionTime = 0f;
             globeLayer.wmsLayer = availableLayers[layerName];
-
-            if (downloader != null)
-            {
-                downloader.Clear(index + 1);
-            }
         }
 
         public void GetLayerNames(string[] layerArray)
