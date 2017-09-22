@@ -1395,11 +1395,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textureFormatString: image/png
   stylesString: 
-  averageWithPreviousDays: 0
+  averageWithPreviousDays: 1
   latStep: 36
   lonStep: 36
   bilinearlyFilterScienceDataValues: 0
-  daysToUse: 1
+  daysToUse: 3
   colorMissingFromDictCount: 0
   zeroColorValuesFound: 0
 --- !u!23 &455791970
@@ -3857,11 +3857,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textureFormatString: image/png
   stylesString: 
-  averageWithPreviousDays: 0
+  averageWithPreviousDays: 1
   latStep: 36
   lonStep: 36
   bilinearlyFilterScienceDataValues: 0
-  daysToUse: 1
+  daysToUse: 3
   colorMissingFromDictCount: 0
   zeroColorValuesFound: 0
 --- !u!1 &1750970963
