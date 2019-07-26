@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QCARConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="qcar_config.xsd">
+  <Tracking>
+    <ImageTarget name="EarthMap" size="0.254000 0.127000" />
+    <ImageTarget name="Landsat8" size="0.088900 0.050747" />
+    <ImageTarget name="ICESat2" size="0.088900 0.050747" />
+    <ImageTarget name="Aura" size="0.088900 0.050747" />
+    <ImageTarget name="Aqua" size="0.088900 0.050747" />
+  </Tracking>
+</QCARConfig>
