@@ -27,6 +27,7 @@ namespace EVRTH.Scripts.Visualization
                     tileTextureDict.RemoveAt(0);
                     //Destroy(textureToRemove);
                 }
+                Resources.UnloadUnusedAssets();
 
                 //Debug.Log("Registering tile texture for " + date.ToString("yyyy-MM-dd"));
 

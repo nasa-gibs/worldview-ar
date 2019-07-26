@@ -4,4 +4,14 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/WorldviewAR/Scenes/MainMenu.unity
+    guid: 682398d8bde82443c9b4ba8330ea872e
+  - enabled: 1
+    path: Assets/WorldviewAR/Scenes/FreePlay.unity
+    guid: 1a5882c5d55a9480e82d1d66ec75363c
+  - enabled: 1
+    path: Assets/WorldviewAR/Scenes/Game.unity
+    guid: 720cb1cb1d2704681b7689f43c30e755
+  m_configObjects: {}

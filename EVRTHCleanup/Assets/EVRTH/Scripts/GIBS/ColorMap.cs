@@ -10,7 +10,7 @@ namespace EVRTH.Scripts.GIBS
 {
     public class ColorMap
     {
-        public Dictionary<Color, DataRange> colors;
+        public Dictionary<Vector3, DataRange> colors;
         public string url;
         public string title;
         public string units;
@@ -59,7 +59,7 @@ namespace EVRTH.Scripts.GIBS
 
         public void GenerateColormap()
         {
-            colors = new Dictionary<Color, DataRange>();
+            colors = new Dictionary<Vector3, DataRange>();
             XmlTextReader colormapReader;
 
             if (useOnline)
@@ -104,11 +104,10 @@ namespace EVRTH.Scripts.GIBS
                                 string colorString = colormapReader.GetAttribute("rgb");
                                 System.Diagnostics.Debug.Assert(colorString != null, "colorString != null");
                                 string[] colorsStringArray = colorString.Split(',');
-                                Color colorNode =
-                                    new Color(Convert.ToSingle(colorsStringArray[0]) / 255,
-                                        Convert.ToSingle(colorsStringArray[1]) / 255,
-                                        Convert.ToSingle(colorsStringArray[2]) / 255);
-
+                                Vector3 colorNode =
+                                    new Vector3(Convert.ToSingle(colorsStringArray[0]),
+                                                Convert.ToSingle(colorsStringArray[1]),
+                                                Convert.ToSingle(colorsStringArray[2]));
                                 colors[colorNode] = range;
                             }
                         }
@@ -117,11 +116,28 @@ namespace EVRTH.Scripts.GIBS
             }
         }
 
-        public DataRange GetRange(Color colorInput)
+        public DataRange GetRange(Vector3 colorInput)
         {
             if (colors.ContainsKey(colorInput))
             {
                 return colors[colorInput];
+            }
+
+            //If no exact match, calculate "closest" color
+            Vector3 closetKey = new Vector3(0,0,0);
+            float trackDistance = 100;
+            foreach(Vector3 key in colors.Keys){
+                if(Vector3.Distance(colorInput, key) < trackDistance){
+                    trackDistance = Vector3.Distance(colorInput, key);
+                    closetKey = key;
+                }
+            }
+            if (colors.ContainsKey(closetKey)){
+                return colors[closetKey];
+            }
+            //If no close color, default to first data range
+            else{
+                return colors.Values.First();
             }
             //Debug.Log("color of " + colorInput + " not found in color map at " + url);
             throw new KeyNotFoundException("Color not specified in color map");

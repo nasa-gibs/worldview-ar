@@ -40,7 +40,9 @@ namespace EVRTH.Scripts.Utility
                 if (tileQueue.Count > 0)
                 {
                     TileCreationParams parameters = tileQueue.Dequeue();
-                    CreateTile(parameters.parent, parameters.coords);
+                    if (parameters.parent != null){
+                        CreateTile(parameters.parent, parameters.coords);
+                    }
                 }
                 else
                 {

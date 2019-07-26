@@ -267,6 +267,17 @@ namespace EVRTH.Scripts.GlobeNS
                         if (CanRender)
                         {
                             visible = true;
+
+                            //If using dynamical mip mapping, destroy unneeded children to free up memory.
+                            if (children != null)
+                            {
+                                children = null;
+                                childCount = 0;
+                                foreach (Transform child in gameObject.transform)
+                                {
+                                    Destroy(child.gameObject);
+                                }
+                            }
                         }
                     }
                 }
@@ -368,6 +379,11 @@ namespace EVRTH.Scripts.GlobeNS
 
             Vector3 normalWs = globe.transform.TransformDirection(normal);
             surfaceNormal = transform.InverseTransformDirection(normalWs); // Store in local space
+
+            if (IsTopLevelTile())
+            {
+                gameObject.AddComponent<MeshCollider>();
+            }
         }
 
         private void CreateChildren()
@@ -407,6 +423,8 @@ namespace EVRTH.Scripts.GlobeNS
             //{
                 string textureParam = shaderTextureNames[layerIndex];
 
+            if (this)
+            {
                 Debug.Assert(GetComponent<Renderer>().material.HasProperty(textureParam), "Shader does not support property " + textureParam);
                 Material currentMaterial = GetComponent<Renderer>().material;
                 Texture currentTexture = GetComponent<Renderer>().material.GetTexture(textureParam);
@@ -420,6 +438,7 @@ namespace EVRTH.Scripts.GlobeNS
                 }
                 float value = IsTopLevelTile() ? 0f : 1f;
                 PrepareForLayerTransition(layerIndex, myTexture, currentTexture,  currentTextureOffset, currentTextureScale, value);
+            }
             //}
             //else
             //{
@@ -471,12 +490,14 @@ namespace EVRTH.Scripts.GlobeNS
         {
             Material currentMaterial =  GetComponent<Renderer>().material;
 
-            // Move current texture to old texture slot and swap over to showing it
-            string oldTexParam = shaderOldTextureNames[layerIndex];
-            currentMaterial.SetTexture(oldTexParam, currentTexture);
-            currentMaterial.SetTextureOffset(oldTexParam, currentTextureOffset);
-            currentMaterial.SetTextureScale(oldTexParam, currentTextureScale);
-
+            if (IsTopLevelTile())
+            {
+                // Move current texture to old texture slot and swap over to showing it
+                string oldTexParam = shaderOldTextureNames[layerIndex];
+                currentMaterial.SetTexture(oldTexParam, currentTexture);
+                currentMaterial.SetTextureOffset(oldTexParam, currentTextureOffset);
+                currentMaterial.SetTextureScale(oldTexParam, currentTextureScale);
+            }
             // Move new texture to new texture slot
             string newTexParam = shaderTextureNames[layerIndex];
             currentMaterial.SetTexture(newTexParam, newTexture);
@@ -496,8 +517,10 @@ namespace EVRTH.Scripts.GlobeNS
                 currentMaterial.SetTextureScale(newTexParam, Vector2.one);
             }
 
-            // Start the cross fade animation from 0
-            SetTransitionProgress(layerIndex, transitionValue);
+            if (IsTopLevelTile()){
+                // Start the cross fade animation from 0
+                SetTransitionProgress(layerIndex, transitionValue);
+            }
         }
 
         public void SetTransitionProgress(int layerIndex, float progress)

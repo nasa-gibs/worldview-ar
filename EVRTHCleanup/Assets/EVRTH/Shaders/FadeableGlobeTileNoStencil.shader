@@ -14,6 +14,10 @@
         
         _Overlay2("Overlay 2", 2D) = "black"
         _OldOverlay2("Old Overlay 2", 2D) = "black"
+
+        _SpyPos("SpyPos", Vector) = (0, 0, 0, 0)
+        _Radius("Radius", Float) = 0.05
+        _Toggle("Toggle", int) = 1
 	}
 
         
@@ -28,6 +32,7 @@
 		    float2 uv_NewTex;
 			float2 uv2_Overlay1;
 			float2 uv3_Overlay2;
+            float3 worldPos;
 	    };
 
 
@@ -44,19 +49,32 @@
     float _Overlay1Blend;
     float _Overlay2Blend;
 
+    float3 _SpyPos;
+    float _Radius;
+    int _Toggle;
+
     void surf(Input IN, inout SurfaceOutput o)
 	{
+        float d = distance(_SpyPos, IN.worldPos);
 		float3 t1 = tex2D(_OldTex, IN.uv_NewTex).rgb;        
         float3 t2 = tex2D(_NewTex, IN.uv_NewTex).rgb;
-		o.Albedo = lerp(t1, t2, _Blend);
-
         float4 ot1 = tex2D(_OldOverlay1, IN.uv2_Overlay1).rgba;
         float4 ot2 = tex2D(_Overlay1, IN.uv2_Overlay1).rgba;
-        float4 overlay1 = lerp(ot1, ot2, _Overlay1Blend);
+        float4 ot3 = tex2D(_OldOverlay2, IN.uv3_Overlay2).rgba;
+        float4 ot4 = tex2D(_Overlay2, IN.uv3_Overlay2).rgba;
+        float4 overlay1;
+        float4 overlay2;
 
-        ot1 = tex2D(_OldOverlay2, IN.uv3_Overlay2).rgba;
-        ot2 = tex2D(_Overlay2, IN.uv3_Overlay2).rgba;
-        float4 overlay2 = lerp(ot1, ot2, _Overlay2Blend);
+        if(d < _Radius && _Toggle == 1){
+            o.Albedo = t1;
+            overlay1 = ot1;
+            overlay2 = ot3;
+        }
+        else{
+            o.Albedo = lerp(t1, t2, _Blend);
+            overlay1 = lerp(ot1, ot2, _Overlay1Blend);
+            overlay2 = lerp(ot3, ot4, _Overlay2Blend);
+        }
 
         // Use the overlay alpha to select between the overlay texture and the base texture
         o.Albedo = lerp(o.Albedo, overlay1, overlay1.a);

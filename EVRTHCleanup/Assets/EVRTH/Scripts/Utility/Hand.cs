@@ -11,7 +11,7 @@ namespace EVRTH.Scripts.Utility
     [RequireComponent(typeof(Collider))]
     public class Hand : MonoBehaviour
     {
-        public VRNode vrNode;
+        public UnityEngine.XR.XRNode vrNode;
         public Transform globeTransform;
         public float globeRotSpeed;
         public float scaleThreshold;
@@ -30,7 +30,7 @@ namespace EVRTH.Scripts.Utility
         private void Awake()
         {
             transform = GetComponent<Transform>();
-            InputTracking.Recenter();
+            UnityEngine.XR.InputTracking.Recenter();
             if (useLaserPointer && laserPointerRenderer == null)
             {
                 laserPointerRenderer = GetComponent<LineRenderer>();
@@ -45,8 +45,8 @@ namespace EVRTH.Scripts.Utility
         // Update is called once per frame
         private void Update()
         {
-            transform.localPosition = InputTracking.GetLocalPosition(vrNode);
-            transform.localRotation = InputTracking.GetLocalRotation(vrNode);
+            transform.localPosition = UnityEngine.XR.InputTracking.GetLocalPosition(vrNode);
+            transform.localRotation = UnityEngine.XR.InputTracking.GetLocalRotation(vrNode);
             if (useLaserPointer)
             {
                 laserPointerRenderer.SetPosition(0, transform.position);

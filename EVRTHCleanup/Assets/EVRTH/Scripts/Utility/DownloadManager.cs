@@ -90,12 +90,18 @@ namespace EVRTH.Scripts.Utility
                     {
                         Texture2D myTexture = new Texture2D(2, 2, TextureFormat.RGB24, true, linearTextures);
                         myTexture.LoadImage(t.downloadHandler.data, false);
+                        //HACK: Unity does not provide a callback if the image for the texture is unrecognized.
+                        //The default texture for an unrecognized image is a red question mark that is 8x8.
+                        //Here we check for that and swap it for a black texture.
+                        if(myTexture.height == 8){
+                            myTexture = Texture2D.blackTexture;
+                        }
                         if (globeTileLayerSet.prepareTextureForRendering)
                         {
                             myTexture.wrapMode = TextureWrapMode.Clamp;
                             myTexture.mipMapBias = globalMipMapBias;
                             myTexture.anisoLevel = globalAnisoLevel;
-                            myTexture.Apply(true, true);
+                            myTexture.Apply(true, false);
                         }
                         globeTileLayerSet.texture = myTexture;
                         globeTileTexturesToLoadQueue.Enqueue(globeTileLayerSet);
