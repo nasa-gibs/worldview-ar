@@ -1,5 +1,5 @@
 # worldview-ar
-Augmented Reality (AR) prototype to view Earth imagery using imagery from NASA's Global Imagery Browse Services.
+Augmented Reality (AR) prototype to view Earth imagery using imagery from NASA's [Global Imagery Browse Services (GIBS)](https://earthdata.nasa.gov/gibs).
 
 Developed during the summer of 2018 at NASA / Goddard Space Flight Center and is not currently being actively developed.  It is based on the Jet Propulsion Laboratory's EVRTH software:
 
